@@ -25,9 +25,12 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-3">
-                                    <span class="text-danger">teste</span>
-                                </div>
+                                @if (ViewBag.Errors != null)
+                                {
+                                    <div class="mt-3">
+                                        <span class="text-danger">@ViewBag.Errors</span>
+                                    </div>
+                                }
                                 <div style="margin-top: 10px;"></div>
                                 <button type="submit" style="padding: 14px 28px; font-size: 16px; background-color: rgb(243, 97, 0); color: #fff; border: none; border-radius: 4px; cursor: pointer;">Login</button>
                             </form>

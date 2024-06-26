@@ -1,6 +1,7 @@
-﻿using Application.Services;
+﻿using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repositories;
+using IronGym.Shared.Entities;
 using IronGym.Shared.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,9 @@ namespace API.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserRepository _userRepository;
-        private readonly SecurityService _securityService;
+        private readonly ISecurityService _securityService;
         private readonly AESService _aesService;
-        public UserController(UserRepository userRepository, SecurityService securityService, AESService aesService)
+        public UserController(UserRepository userRepository, ISecurityService securityService, AESService aesService)
         {
             _userRepository = userRepository;
             _securityService = securityService;
@@ -23,7 +24,7 @@ namespace API.Controllers
         [HttpPost("/RegisterUser")]
         public IActionResult RegisterUser(NewAccountViewModel newAccount)
         {
-            if (!_userRepository.CheckIfEmailIsAlreadyRegistered(newAccount.Email))
+            if (_userRepository.CheckIfEmailIsAlreadyRegistered(newAccount.Email))
             {
                 return BadRequest();
             }
@@ -46,22 +47,26 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            string code = _userRepository.GetEmailVerificationCode(email);
-            return Ok(code);
+            _userRepository.GetEmailVerificationCode(email);
+            return Ok();
         }
 
-        [HttpGet("/CheckVerificationCode/{encryptedEmail}/{code}")]
-        public IActionResult CheckVerificationCode(string encryptedEmail, string code)
+        [HttpPost("/CheckVerificationCode")]
+        public IActionResult CheckVerificationCode(VerificationCodeModel verificationCodeModel)
         {
-            string email = _aesService.DecryptAES(encryptedEmail);
+            string email = _aesService.DecryptAES(verificationCodeModel.Email);
             User user = _userRepository.GetUserByEmail(email);
 
             if (user == null)
             {
                 return NotFound();
             }
+            if (user.VerificationCode != verificationCodeModel.VerificationCode)
+            {
+                return BadRequest();
+            }
 
-            return Ok(code);
+            return Ok();
         }
 
         [HttpPatch("/VerifyEmail/{encryptedEmail}")]
@@ -79,8 +84,8 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("/Login/")]
-        public IActionResult VerifyEmail(LoginViewModel login)
+        [HttpPost("/Login")]
+        public IActionResult Login(LoginViewModel login)
         {
             if (!_userRepository.CheckIfEmailIsAlreadyRegistered(login.Email))
             {
