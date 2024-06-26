@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Application.Services;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using IronGym.Shared.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -44,6 +45,8 @@ builder.Services.AddScoped<ISecurityService>(serviceProvider =>
 
 // Register other services
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<SecurityService>();
+builder.Services.AddScoped<AESService>();
 
 // Configure authentication and authorization
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

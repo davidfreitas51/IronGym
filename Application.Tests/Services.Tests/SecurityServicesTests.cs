@@ -68,6 +68,5 @@ namespace Application.Tests.Services.Tests
 
             token.Should().BeNull();
         }
-
     }
 }

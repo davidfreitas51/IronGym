@@ -27,12 +27,69 @@ namespace Infrastructure.Tests.Repositories.Tests
                       new User()
                       {
                           Email = "User@example.com",
-                          NormalizedEmail = "USER@EXAMPLE.COM"
+                          NormalizedEmail = "USER@EXAMPLE.COM",
+                          VerificationCode = "123456"
                       });
                     await databaseContext.SaveChangesAsync();
                 }
             }
             return databaseContext;
+        }
+
+        [Fact]
+        public async void GetEmailVerificationCode_ShouldReturnVerificationCode()
+        {
+            var dbContext = await GetDbContext();
+            var repository = new UserRepository(dbContext, _securityService);
+
+            var result = repository.GetEmailVerificationCode("User@example.com");
+
+            result.Should().NotBeNullOrEmpty(); 
+            result.Length.Should().Be(6);
+        }
+
+        [Fact]
+        public async void ValidateCode_ShouldBeTrue()
+        {
+            var dbContext = await GetDbContext();
+            var repository = new UserRepository(dbContext, _securityService);
+
+            var result = repository.ValidateCode("User@example.com", "123456");
+
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public async void ValidateCode_ShouldBeFalseIncorrectCode()
+        {
+            var dbContext = await GetDbContext();
+            var repository = new UserRepository(dbContext, _securityService);
+
+            var result = repository.ValidateCode("User@example.com", "654321");
+
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void ValidateCode_ShouldBeFalseEmailNotFound()
+        {
+            var dbContext = await GetDbContext();
+            var repository = new UserRepository(dbContext, _securityService);
+
+            var result = repository.ValidateCode("User@example.com", "654321");
+
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void VerifyEmail_ShouldBeTrue()
+        {
+            var dbContext = await GetDbContext();
+            var repository = new UserRepository(dbContext, _securityService);
+
+            var result = repository.VerifyEmail("User@example.com");
+
+            result.Should().BeTrue();
         }
 
         [Fact]

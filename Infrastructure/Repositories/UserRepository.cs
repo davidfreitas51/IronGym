@@ -28,8 +28,26 @@ namespace Infrastructure.Repositories
         {
             User user = GetUserByEmail(email);
             user.VerificationCode = _email.SendVerificationEmail(email);
+            _context.SaveChanges();
             return user.VerificationCode;
+        }
 
+        public bool ValidateCode(string email, string codeInput)
+        {
+            User user = GetUserByEmail(email);
+            if (user != null && user.VerificationCode == codeInput)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool VerifyEmail(string email)
+        {
+            User user = GetUserByEmail(email);
+            user.IsEmailVerified = true;
+            _context.SaveChanges();
+            return true;
         }
 
         public bool AddUser(User user, string password)
