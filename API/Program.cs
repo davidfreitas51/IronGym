@@ -36,16 +36,13 @@ builder.Services.AddDbContext<IronGymContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("IronGym"));
 });
 
-// Register SecurityService with its required configuration parameter
+// Register Services
 builder.Services.AddScoped<ISecurityService>(serviceProvider =>
 {
     var appSettingsToken = builder.Configuration.GetSection("AppSettings:Token").Value;
     return new SecurityService(appSettingsToken);
 });
-
-// Register other services
 builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<SecurityService>();
 builder.Services.AddScoped<AESService>();
 
 // Configure authentication and authorization

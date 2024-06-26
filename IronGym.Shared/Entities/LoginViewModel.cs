@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities
+﻿namespace IronGym.Shared.Entities
 {
     public class LoginViewModel
     {
