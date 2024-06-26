@@ -7,8 +7,8 @@
                 <div class="form-holder" style="max-width: 600px; width: 100%;">
                     <div class="form-content text-center">
                         <div class="form-items" style="margin-bottom: 30px;">
-                            <h3 class="register-heading" style="font-size: 24px; color: #f36100; margin-bottom: 10px;">Welcome back</h3>
-                            <p class="register-subheading" style="color: white; font-size: 16px; margin-bottom: 20px;">Fill in the data below.</p>
+                            <h3 class="register-heading" style="font-size: 24px; color: #f36100; margin-bottom: 10px;">Forgot Your Password?</h3>
+                            <p class="register-subheading" style="color: white; font-size: 16px; margin-bottom: 20px;">Please enter your email address to receive your code</p>
 
                             <form asp-action="Login" asp-controller="Home" method="post" class="needs-validation" novalidate>
                                 <div class="row justify-content-center">
@@ -18,15 +18,6 @@
                                     </div>
                                 </div>
 
-                                <div class="row justify-content-center">
-                                    <div class="col-md-6 mb-3">
-                                        <input asp-for="Password" class="form-control" type="password" name="password" placeholder="Password" required style="padding: 12px;" />
-                                        <span asp-validation-for="Password" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <a asp-action="AddEmail" asp-controller="ForgotYourPassword" class="nav-link">
-                                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Forgot your password?
-                                </a>
                                 @if (ViewBag.Errors != null)
                                 {
                                     <div class="mt-3">

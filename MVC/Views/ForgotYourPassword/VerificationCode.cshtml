@@ -1,0 +1,22 @@
+﻿@model VerificationCodeModel
+
+<section class="choseus-section spad" style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #000; margin: 0; padding: 20px; color: #fff;">
+    <div class="container" style="text-align: center; background-color: rgba(0, 0, 0, 0.7); padding: 40px; border-radius: 8px;">
+        <h2 style="font-size: 24px; color: white; margin-bottom: 10px;">Enter Six-Digit Code:</h2>
+        <p style="color: #fff; font-size: 16px; margin-bottom: 20px;">Type the code we sent to your email</p>
+
+        <form asp-action="EmailVerification" asp-controller="Home" method="post" class="needs-validation" novalidate>
+            <input asp-for="VerificationCode" type="text" pattern="[0-9]{6}" maxlength="6" required style="padding: 14px; font-size: 16px; width: 200px; text-align: center; border: 1px solid #fff; border-radius: 4px; margin-bottom: 20px; color: #000;" /><br>
+            <span asp-validation-for="VerificationCode" class="text-danger"></span>
+
+            @if (ViewBag.Errors != null)
+            {
+                <div class="mt-3">
+                    <span class="text-danger">@ViewBag.Errors</span>
+                </div>
+            }
+            <div style="margin-top: 10px;"></div>
+            <button type="submit" style="padding: 14px 28px; font-size: 16px; background-color: rgb(243, 97, 0); color: #fff; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+        </form>
+    </div>
+</section>

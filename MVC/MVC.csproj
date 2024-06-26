@@ -7,11 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Home\ForgotYourPasswordAddEmail.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\IronGym.Shared\IronGym.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Home\ForgotYourPasswordAddEmail.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Home\ForgotYourPasswordAddEmail.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\ForgotYourPassword\AddEmail.cshtml" />
   </ItemGroup>
 
 </Project>
