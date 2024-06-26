@@ -26,8 +26,4 @@
     <_ContentIncludedByDefault Remove="Views\Home\ForgotYourPasswordAddEmail.cshtml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Views\ForgotYourPassword\AddEmail.cshtml" />
-  </ItemGroup>
-
 </Project>

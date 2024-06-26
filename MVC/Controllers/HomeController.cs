@@ -1,10 +1,9 @@
 using IronGym.Shared.Entities;
 using IronGym.Shared.Services;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using MVC.Services;
 using System.Security.Claims;
 
 namespace MVC.Controllers
@@ -12,9 +11,11 @@ namespace MVC.Controllers
     public class HomeController : Controller
     {
         private readonly AESService _aesService;
-        public HomeController(AESService aesService)
+        private readonly RequestSenderService _requestSenderService;
+        public HomeController(AESService aesService, RequestSenderService requestSenderService)
         {
             _aesService = aesService;
+            _requestSenderService = requestSenderService;
         }
 
         [HttpGet]
@@ -37,7 +38,7 @@ namespace MVC.Controllers
                 return View();
             }
 
-            var response = await PostRequest(newAcc, "https://localhost:7175/RegisterUser");
+            var response = await _requestSenderService.PostRequest(newAcc, "https://localhost:7175/RegisterUser");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -57,7 +58,7 @@ namespace MVC.Controllers
             string userEmail = TempData.Peek("Email") as string;
             string encryptedEmail = _aesService.EncryptAES(userEmail);
 
-            var response = await GetRequest("https://localhost:7175/GetVerificationCode/" + encryptedEmail);
+            var response = await _requestSenderService.GetRequest("https://localhost:7175/GetVerificationCode/" + encryptedEmail);
 
             if (response.IsSuccessStatusCode)
             {
@@ -79,7 +80,7 @@ namespace MVC.Controllers
 
             string userEmail = TempData.Peek("Email") as string;
             verCodeModel.Email = _aesService.EncryptAES(userEmail);
-            var response = await PostRequest(verCodeModel, "https://localhost:7175/CheckVerificationCode");
+            var response = await _requestSenderService.PostRequest(verCodeModel, "https://localhost:7175/CheckVerificationCode");
 
             if (response.IsSuccessStatusCode)
             {
@@ -104,11 +105,16 @@ namespace MVC.Controllers
                 return View();
             }
 
-            var response = await PostRequest(login, "https://localhost:7175/Login");
+            var response = await _requestSenderService.PostRequest(login, "https://localhost:7175/Login");
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 return RedirectToAction("EmailVerification");
+            }
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                ViewBag.Errors = "Invalid credentials";
+                return View();
             }
             if (response.IsSuccessStatusCode)
             {
@@ -130,7 +136,6 @@ namespace MVC.Controllers
 
                 var authProperties = new AuthenticationProperties
                 {
-                    // Propriedades adicionais podem ser configuradas aqui
                 };
 
                 await HttpContext.SignInAsync(
@@ -141,34 +146,6 @@ namespace MVC.Controllers
                 return RedirectToAction("Index", "Vault");
             }
             return View();
-        }
-
-        public async Task<HttpResponseMessage> GetRequest(string apiUrl)
-        {
-            using HttpClient httpClient = new HttpClient();
-            return await httpClient.GetAsync(apiUrl);
-        }
-
-        public async Task<HttpResponseMessage> PostRequest<T>(T obj, string apiUrl)
-        {
-            using HttpClient httpClient = new HttpClient();
-            string jsonObj = JsonSerializer.Serialize(obj);
-            var content = new StringContent(jsonObj, Encoding.UTF8, "application/json");
-            return await httpClient.PostAsync(apiUrl, content);
-        }
-
-        public async Task<HttpResponseMessage> PatchRequest<T>(T obj, string apiUrl)
-        {
-            using HttpClient httpClient = new HttpClient();
-            string jsonObj = JsonSerializer.Serialize(obj);
-            var content = new StringContent(jsonObj, Encoding.UTF8, "application/json");
-
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), apiUrl)
-            {
-                Content = content
-            };
-
-            return await httpClient.SendAsync(request);
         }
     }
 }

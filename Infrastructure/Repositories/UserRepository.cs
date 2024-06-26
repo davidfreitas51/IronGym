@@ -50,6 +50,20 @@ namespace Infrastructure.Repositories
             return true;
         }
 
+        public bool ChangePassword(string email, string newPassword)
+        {
+            User user = GetUserByEmail(email);
+            if (user != null)
+            {
+                _securityService.CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
         public bool AddUser(User user, string password)
         {
             try
@@ -60,6 +74,7 @@ namespace Infrastructure.Repositories
                 user.PasswordSalt = passwordSalt;
                 user.NormalizedEmail = user.Email.ToUpper();
                 user.Role = "User";
+                user.IsEmailVerified = false;
 
                 _context.Users.Add(user);
                 _context.SaveChanges();

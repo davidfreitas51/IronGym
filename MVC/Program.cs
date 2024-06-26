@@ -1,5 +1,6 @@
 using IronGym.Shared.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 
 builder.Services.AddScoped<AESService>();
+builder.Services.AddScoped<RequestSenderService>();
 
 var app = builder.Build();
 

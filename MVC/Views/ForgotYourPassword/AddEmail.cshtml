@@ -1,4 +1,4 @@
-﻿@model LoginViewModel
+﻿@model ForgotYourPasswordEmail
 
 <section class="choseus-section spad">
     <div class="container">
@@ -10,10 +10,10 @@
                             <h3 class="register-heading" style="font-size: 24px; color: #f36100; margin-bottom: 10px;">Forgot Your Password?</h3>
                             <p class="register-subheading" style="color: white; font-size: 16px; margin-bottom: 20px;">Please enter your email address to receive your code</p>
 
-                            <form asp-action="Login" asp-controller="Home" method="post" class="needs-validation" novalidate>
+                            <form asp-action="AddEmail" asp-controller="ForgotYourPassword" method="post" class="needs-validation" novalidate>
                                 <div class="row justify-content-center">
                                     <div class="col-md-6 mb-3">
-                                        <input asp-for="Email" class="form-control" type="email" name="email" placeholder="E-mail Address" required style="padding: 12px;" />
+                                        <input asp-for="Email" class="form-control" type="email" placeholder="E-mail Address" required style="padding: 12px;" />
                                         <span asp-validation-for="Email" class="text-danger"></span>
                                     </div>
                                 </div>
