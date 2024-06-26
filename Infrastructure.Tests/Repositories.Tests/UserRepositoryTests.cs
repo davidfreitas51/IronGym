@@ -27,6 +27,7 @@ namespace Infrastructure.Tests.Repositories.Tests
                       new User()
                       {
                           Email = "User@example.com",
+                          NormalizedEmail = "USER@EXAMPLE.COM"
                       });
                     await databaseContext.SaveChangesAsync();
                 }
@@ -35,7 +36,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         }
 
         [Fact]
-        public async Task UserRepository_CheckIfEmailIsAlreadyRegistered_ShouldBeTrue()
+        public async Task CheckIfEmailIsAlreadyRegistered_ShouldBeTrue()
         {
             var dbContext = await GetDbContext();
             var repository = new UserRepository(dbContext, _securityService);
@@ -46,7 +47,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         }
 
         [Fact]
-        public async Task UserRepository_CheckIfEmailIsAlreadyRegistered_ShouldBeFalse()
+        public async Task CheckIfEmailIsAlreadyRegistered_ShouldBeFalse()
         {
             var dbContext = await GetDbContext();
             var repository = new UserRepository(dbContext, _securityService);
@@ -57,7 +58,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         }
 
         [Fact]
-        public async Task UserRepository_AddUser_ShouldBeTrue()
+        public async Task AddUser_ShouldBeTrue()
         {
             var dbContext = await GetDbContext();
             var repository = new UserRepository(dbContext, _securityService);
@@ -72,7 +73,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         }
 
         [Fact]
-        public async Task UserRepository_AddUser_ShouldBeFalse()
+        public async Task AddUser_ShouldBeFalse()
         {
             var dbContext = await GetDbContext();
             var repository = new UserRepository(dbContext, _securityService);

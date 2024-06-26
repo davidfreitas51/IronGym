@@ -28,5 +28,18 @@ namespace API.Controllers
             _userRepository.AddUser(user, newAccount.Password);
             return Ok(user);
         }
+
+        [HttpGet("/GetVerificationEmail/{id}")]
+        public IActionResult GetVerificationEmail(string email)
+        {
+            User user = _userRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            string code = _userRepository.GetEmailVerificationCode(email);
+
+            return Ok(user);
+        }
     }
 }

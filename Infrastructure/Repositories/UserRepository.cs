@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.Data;
+using IronGym.Application.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -9,16 +10,26 @@ namespace Infrastructure.Repositories
     {
         private readonly IronGymContext _context;
         private readonly ISecurityService _securityService;
+        private readonly EmailService _email;
 
         public UserRepository(IronGymContext context, ISecurityService securityService)
         {
             _context = context;
             _securityService = securityService;
+            _email = new EmailService();
         }
 
         public bool CheckIfEmailIsAlreadyRegistered(string email)
         {
-            return _context.Users.Any(u => u.Email.ToUpper() == email.ToUpper());
+            return _context.Users.Any(u => u.NormalizedEmail == email.ToUpper());
+        }
+
+        public string GetEmailVerificationCode(string email)
+        {
+            User user = GetUserByEmail(email);
+            user.VerificationCode = _email.SendVerificationEmail(email);
+            return user.VerificationCode;
+
         }
 
         public bool AddUser(User user, string password)
@@ -37,14 +48,14 @@ namespace Infrastructure.Repositories
 
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
         }
-        public User GetUserById(int userId)
+        public User GetUserByEmail(string email)
         {
-            return _context.Set<User>().Find(userId);
+            return _context.Users.FirstOrDefault(u => u.NormalizedEmail == email.ToUpper());
         }
 
         public List<User> GetAllUsers()
@@ -61,7 +72,7 @@ namespace Infrastructure.Repositories
 
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
@@ -80,7 +91,7 @@ namespace Infrastructure.Repositories
                 _context.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

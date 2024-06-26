@@ -24,7 +24,7 @@ namespace Application.Services
             }
         }
 
-        public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        public bool ComparePasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512(passwordSalt))
             {
@@ -35,25 +35,30 @@ namespace Application.Services
 
         public string CreateToken(User user)
         {
-            List<Claim> claims = new List<Claim>
+            try
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
-            };
+                List<Claim> claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenString));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenString));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
+                var token = new JwtSecurityToken(
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(1),
+                    signingCredentials: creds);
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+                var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds);
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
+                return jwt;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
