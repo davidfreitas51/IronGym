@@ -9,14 +9,12 @@
                         <div class="form-items" style="margin-bottom: 30px;">
                             <h3 class="register-heading" style="font-size: 24px; color: #f36100; margin-bottom: 10px;">Welcome back</h3>
                             <p class="register-subheading" style="color: white; font-size: 16px; margin-bottom: 20px;">Fill in the data below.</p>
-
-                            @if (ViewBag.Success != null)
+                            @if (TempData["MSG_S"] != null)
                             {
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                     @ViewBag.Success
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                <div class="mt-3 mb-3" style="max-width: 300px; margin: auto;">
+                                    <div style="border: 1px solid lightgreen; padding: 10px; border-radius: 5px; background-color: #f0fff0;">
+                                        <span style="font-weight: 200; color: darkgreen;">@TempData["MSG_S"]</span>
+                                    </div>
                                 </div>
                             }
 

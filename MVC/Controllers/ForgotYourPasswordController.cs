@@ -1,5 +1,4 @@
 ﻿using IronGym.Shared.Entities;
-using IronGym.Shared.Services;
 using IronGym.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Services;
@@ -89,7 +88,7 @@ namespace MVC.Controllers
 
             var result = await _requestSenderService.PostRequest(newPasswordModel, "https://localhost:7175/api/Password/ChangePassword");
 
-            ViewBag.Success = "Password changed successfully";
+            TempData["MSG_S"] = "Password changed successfully";
             return RedirectToAction("Login", "Home");
         }
     }

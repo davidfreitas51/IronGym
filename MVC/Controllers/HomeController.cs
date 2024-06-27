@@ -1,11 +1,10 @@
 using IronGym.Shared.Entities;
-using IronGym.Shared.Services;
+using IronGym.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using MVC.Services;
-using IronGym.Shared.Services.Interfaces;
+using System.Security.Claims;
 
 namespace MVC.Controllers
 {
@@ -85,7 +84,7 @@ namespace MVC.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Success = "Account successfully verified";
+                TempData["MSG_S"] = "Account successfully verified";
                 return RedirectToAction("Login");
             }
 
