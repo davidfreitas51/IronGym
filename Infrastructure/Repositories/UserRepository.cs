@@ -58,6 +58,7 @@ namespace Infrastructure.Repositories
                 _securityService.CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
+                _context.Users.Update(user);
                 _context.SaveChanges();
                 return true;
             }

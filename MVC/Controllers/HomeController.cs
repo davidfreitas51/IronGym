@@ -38,7 +38,7 @@ namespace MVC.Controllers
                 return View();
             }
 
-            var response = await _requestSenderService.PostRequest(newAcc, "https://localhost:7175/RegisterUser");
+            var response = await _requestSenderService.PostRequest(newAcc, "https://localhost:7175/api/User/RegisterUser");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -58,7 +58,7 @@ namespace MVC.Controllers
             string userEmail = TempData.Peek("Email") as string;
             string encryptedEmail = _aesService.EncryptAES(userEmail);
 
-            var response = await _requestSenderService.GetRequest("https://localhost:7175/GetVerificationCode/" + encryptedEmail);
+            var response = await _requestSenderService.GetRequest("https://localhost:7175/api/User/GetVerificationCode/" + encryptedEmail);
 
             if (response.IsSuccessStatusCode)
             {
@@ -80,10 +80,11 @@ namespace MVC.Controllers
 
             string userEmail = TempData.Peek("Email") as string;
             verCodeModel.Email = _aesService.EncryptAES(userEmail);
-            var response = await _requestSenderService.PostRequest(verCodeModel, "https://localhost:7175/CheckVerificationCode");
+            var response = await _requestSenderService.PostRequest(verCodeModel, "https://localhost:7175/api/User/CheckVerificationCode");
 
             if (response.IsSuccessStatusCode)
             {
+                ViewBag.Success = "Account successfully verified";
                 return RedirectToAction("Login");
             }
 
@@ -105,7 +106,7 @@ namespace MVC.Controllers
                 return View();
             }
 
-            var response = await _requestSenderService.PostRequest(login, "https://localhost:7175/Login");
+            var response = await _requestSenderService.PostRequest(login, "https://localhost:7175/api/User/Login");
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {

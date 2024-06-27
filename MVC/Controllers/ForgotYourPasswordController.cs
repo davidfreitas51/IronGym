@@ -30,7 +30,7 @@ namespace MVC.Controllers
             }
 
             string encryptedEmail = _aesService.EncryptAES(userEmail.Email);
-            var response = await _requestSenderService.GetRequest($"https://localhost:7175/GetResetingPasswordCode/{encryptedEmail}");
+            var response = await _requestSenderService.GetRequest($"https://localhost:7175/api/Password/GetResetingPasswordCode/{encryptedEmail}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -47,13 +47,49 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult VerificationCode([FromForm] ForgotYourPasswordEmail email)
+        public async Task<IActionResult> VerificationCode([FromForm] VerificationCodeModel verificationCodeModel)
         {
+            ModelState.Remove("Email");
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            return RedirectToAction("ChangePassword");
+
+            string userEmail = TempData.Peek("Email") as string;
+            verificationCodeModel.Email = _aesService.EncryptAES(userEmail);
+            var response = await _requestSenderService.PostRequest(verificationCodeModel, "https://localhost:7175/api/Password/CheckResetingPasswordCode");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("ChangePassword");
+            }
+
+            ViewBag.Errors = "Invalid code";
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword([FromForm] NewPasswordModel newPasswordModel)
+        {
+            ModelState.Remove("Email");
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            string userEmail = TempData.Peek("Email") as string;
+            newPasswordModel.Email = _aesService.EncryptAES(userEmail);
+
+            var result = await _requestSenderService.PostRequest(newPasswordModel, "https://localhost:7175/api/Password/ChangePassword");
+
+            ViewBag.Success = "Password changed successfully";
+            return RedirectToAction("Login", "Home");
         }
     }
 }

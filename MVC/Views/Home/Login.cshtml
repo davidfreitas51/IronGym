@@ -10,6 +10,16 @@
                             <h3 class="register-heading" style="font-size: 24px; color: #f36100; margin-bottom: 10px;">Welcome back</h3>
                             <p class="register-subheading" style="color: white; font-size: 16px; margin-bottom: 20px;">Fill in the data below.</p>
 
+                            @if (ViewBag.Success != null)
+                            {
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                     @ViewBag.Success
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            }
+
                             <form asp-action="Login" asp-controller="Home" method="post" class="needs-validation" novalidate>
                                 <div class="row justify-content-center">
                                     <div class="col-md-6 mb-3">

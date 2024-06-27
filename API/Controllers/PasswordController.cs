@@ -21,7 +21,7 @@ namespace API.Controllers
             _aesService = aesService;
         }
 
-        [HttpGet("/GetResetingPasswordCode/{encryptedEmail}")]
+        [HttpGet("GetResetingPasswordCode/{encryptedEmail}")]
         public IActionResult GetVerificationCode(string encryptedEmail)
         {
             string email = _aesService.DecryptAES(encryptedEmail);
@@ -36,7 +36,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("/CheckResetingPasswordCode")]
+        [HttpPost("CheckResetingPasswordCode")]
         public IActionResult CheckResetingPasswordCode(VerificationCodeModel verificationCodeModel)
         {
             string email = _aesService.DecryptAES(verificationCodeModel.Email);
@@ -54,18 +54,27 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("/ChangePassword")]
-        public IActionResult VerifyEmail(NewPasswordModel newPasswordModel)
+        [HttpPost("ChangePassword")]
+        public IActionResult ChangePassword(NewPasswordModel newPasswordModel)
         {
-            User user = _userRepository.GetUserByEmail(newPasswordModel.Email);
+            string email = _aesService.DecryptAES(newPasswordModel.Email);
+            User user = _userRepository.GetUserByEmail(email);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            _userRepository.ChangePassword(newPasswordModel.Email, newPasswordModel.NewPassword);
-            return Ok();
+            bool passwordChanged = _userRepository.ChangePassword(email, newPasswordModel.NewPassword);
+
+            if (passwordChanged)
+            {
+                return Ok(new { message = "Password changed successfully." });
+            }
+            else
+            {
+                return StatusCode(500, "An error occurred while changing the password.");
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace API.Controllers
             _aesService = aesService;
         }
 
-        [HttpPost("/RegisterUser")]
+        [HttpPost("RegisterUser")]
         public IActionResult RegisterUser(NewAccountViewModel newAccount)
         {
             if (_userRepository.CheckIfEmailIsAlreadyRegistered(newAccount.Email))
@@ -36,7 +36,7 @@ namespace API.Controllers
             return Ok(user);
         }
 
-        [HttpGet("/GetVerificationCode/{encryptedEmail}")]
+        [HttpGet("GetVerificationCode/{encryptedEmail}")]
         public IActionResult GetVerificationCode(string encryptedEmail)
         {
             string email = _aesService.DecryptAES(encryptedEmail);
@@ -51,7 +51,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("/CheckVerificationCode")]
+        [HttpPost("CheckVerificationCode")]
         public IActionResult CheckVerificationCode(VerificationCodeModel verificationCodeModel)
         {
             string email = _aesService.DecryptAES(verificationCodeModel.Email);
@@ -69,7 +69,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("/Login")]
+        [HttpPost("Login")]
         public IActionResult Login(LoginViewModel login)
         {
             User user = _userRepository.GetUserByEmail(login.Email);
