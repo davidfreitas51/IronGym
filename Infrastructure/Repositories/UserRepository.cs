@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Domain.Interfaces.Repositories;
 using Infrastructure.Data;
 using IronGym.Application.Services;
 using Microsoft.EntityFrameworkCore;

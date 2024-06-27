@@ -9,7 +9,17 @@ namespace Infrastructure.Tests.Repositories.Tests
 {
     public class UserRepositoryTests
     {
-        public SecurityService _securityService = new SecurityService("randomKeyrandomKeyrandomKeyrandomKeyrandomKeyrandomKeyrandomKeyrandomKeyrandomKey");
+        private readonly SecurityService _securityService;
+        private readonly IronGymContext _dbContext;
+        private readonly UserRepository _repository;
+
+        public UserRepositoryTests()
+        {
+            _securityService = new SecurityService("randomKeyrandomKeyrandomKeyrandomKeyrandomKeyrandomKeyrandomKeyrandomKeyrandomKey");
+            _dbContext = GetDbContext().Result;
+            _repository = new UserRepository(_dbContext, _securityService);
+        }
+
         public async Task<IronGymContext> GetDbContext()
         {
             var options = new DbContextOptionsBuilder<IronGymContext>()
@@ -39,10 +49,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         [Fact]
         public async void GetEmailVerificationCode_ShouldReturnVerificationCode()
         {
-            var dbContext = await GetDbContext();
-            var repository = new UserRepository(dbContext, _securityService);
-
-            var result = repository.GetEmailVerificationCode("User@example.com");
+            var result = _repository.GetEmailVerificationCode("User@example.com");
 
             result.Should().NotBeNullOrEmpty(); 
             result.Length.Should().Be(6);
@@ -51,10 +58,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         [Fact]
         public async void ValidateCode_ShouldBeTrue()
         {
-            var dbContext = await GetDbContext();
-            var repository = new UserRepository(dbContext, _securityService);
-
-            var result = repository.ValidateCode("User@example.com", "123456");
+            var result = _repository.ValidateCode("User@example.com", "123456");
 
             result.Should().BeTrue();
         }
@@ -62,10 +66,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         [Fact]
         public async void ValidateCode_ShouldBeFalseIncorrectCode()
         {
-            var dbContext = await GetDbContext();
-            var repository = new UserRepository(dbContext, _securityService);
-
-            var result = repository.ValidateCode("User@example.com", "654321");
+            var result = _repository.ValidateCode("User@example.com", "654321");
 
             result.Should().BeFalse();
         }
@@ -73,10 +74,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         [Fact]
         public async void ValidateCode_ShouldBeFalseEmailNotFound()
         {
-            var dbContext = await GetDbContext();
-            var repository = new UserRepository(dbContext, _securityService);
-
-            var result = repository.ValidateCode("User@example.com", "654321");
+            var result = _repository.ValidateCode("User@example.com", "654321");
 
             result.Should().BeFalse();
         }
@@ -84,10 +82,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         [Fact]
         public async void VerifyEmail_ShouldBeTrue()
         {
-            var dbContext = await GetDbContext();
-            var repository = new UserRepository(dbContext, _securityService);
-
-            var result = repository.VerifyEmail("User@example.com");
+            var result = _repository.VerifyEmail("User@example.com");
 
             result.Should().BeTrue();
         }
@@ -95,10 +90,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         [Fact]
         public async Task CheckIfEmailIsAlreadyRegistered_ShouldBeTrue()
         {
-            var dbContext = await GetDbContext();
-            var repository = new UserRepository(dbContext, _securityService);
-            
-            var result = repository.CheckIfEmailIsAlreadyRegistered("UsEr@examPle.com");
+            var result = _repository.CheckIfEmailIsAlreadyRegistered("UsEr@examPle.com");
 
             result.Should().BeTrue();
         }
@@ -106,10 +98,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         [Fact]
         public async Task CheckIfEmailIsAlreadyRegistered_ShouldBeFalse()
         {
-            var dbContext = await GetDbContext();
-            var repository = new UserRepository(dbContext, _securityService);
-
-            var result = repository.CheckIfEmailIsAlreadyRegistered("invalidUser@example.com");
+            var result = _repository.CheckIfEmailIsAlreadyRegistered("invalidUser@example.com");
 
             result.Should().BeFalse();
         }
@@ -117,14 +106,12 @@ namespace Infrastructure.Tests.Repositories.Tests
         [Fact]
         public async Task AddUser_ShouldBeTrue()
         {
-            var dbContext = await GetDbContext();
-            var repository = new UserRepository(dbContext, _securityService);
             User user = new User()
             {
                 Email = "user@example.com",
             };
 
-            bool result = repository.AddUser(user, "password");
+            bool result = _repository.AddUser(user, "password");
 
             result.Should().BeTrue();
         }
@@ -132,11 +119,41 @@ namespace Infrastructure.Tests.Repositories.Tests
         [Fact]
         public async Task AddUser_ShouldBeFalse()
         {
-            var dbContext = await GetDbContext();
-            var repository = new UserRepository(dbContext, _securityService);
             User user = new User();
 
-            bool result = repository.AddUser(user, "password");
+            bool result = _repository.AddUser(user, "password");
+
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public async Task GetUserByEmail_ShouldReturnNullForNonExistent()
+        {
+            var result = _repository.GetUserByEmail("NonExistentUser@example.com");
+
+            result.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GetAllUsers_ShouldReturnList()
+        {
+            var result = _repository.GetAllUsers();
+
+            result.Should().BeAssignableTo<List<User>>();
+        }
+
+        [Fact]
+        public async Task ChangePassword_ShouldReturnTrue()
+        {
+            var result = _repository.ChangePassword("user@example.com", "newPassword");
+
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task ChangePassword_ShouldReturnFalse()
+        {
+            var result = _repository.ChangePassword("invalidUser@example.com", "newPassword");
 
             result.Should().BeFalse();
         }
