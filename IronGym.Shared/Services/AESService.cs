@@ -1,9 +1,10 @@
-﻿using System.Security.Cryptography;
+﻿using IronGym.Shared.Services.Interfaces;
+using System.Security.Cryptography;
 
 namespace IronGym.Shared.Services
 {
 
-    public class AESService
+    public class AESService : IAESService
     {
         private readonly string Key = "WqYsL2tA6X1Yo1MlInDmF7bPdGxVHrQcJ4oZvTgKjIeU9yB3lC5fR8wS0MzNpOuYhX6WqYsL2tA6X1nDmF7bPdGxVHrQcJ4oZvTgKjIeU9yB3lC5fR8wS0MzNpOuYhX6";
         private static byte[] key = new byte[32];

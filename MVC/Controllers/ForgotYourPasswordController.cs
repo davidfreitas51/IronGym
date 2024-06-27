@@ -1,5 +1,6 @@
 ﻿using IronGym.Shared.Entities;
 using IronGym.Shared.Services;
+using IronGym.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Services;
 
@@ -7,9 +8,9 @@ namespace MVC.Controllers
 {
     public class ForgotYourPasswordController : Controller
     {
-        private readonly AESService _aesService;
+        private readonly IAESService _aesService;
         private readonly IRequestSenderService _requestSenderService;
-        public ForgotYourPasswordController(AESService aesService, IRequestSenderService requestSenderService)
+        public ForgotYourPasswordController(IAESService aesService, IRequestSenderService requestSenderService)
         {
             _aesService = aesService;
             _requestSenderService = requestSenderService;

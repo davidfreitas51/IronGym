@@ -5,14 +5,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using MVC.Services;
+using IronGym.Shared.Services.Interfaces;
 
 namespace MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AESService _aesService;
+        private readonly IAESService _aesService;
         private readonly IRequestSenderService _requestSenderService;
-        public HomeController(AESService aesService, IRequestSenderService requestSenderService)
+        public HomeController(IAESService aesService, IRequestSenderService requestSenderService)
         {
             _aesService = aesService;
             _requestSenderService = requestSenderService;
