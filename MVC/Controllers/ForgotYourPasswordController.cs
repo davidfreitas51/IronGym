@@ -8,8 +8,8 @@ namespace MVC.Controllers
     public class ForgotYourPasswordController : Controller
     {
         private readonly AESService _aesService;
-        private readonly RequestSenderService _requestSenderService;
-        public ForgotYourPasswordController(AESService aesService, RequestSenderService requestSenderService)
+        private readonly IRequestSenderService _requestSenderService;
+        public ForgotYourPasswordController(AESService aesService, IRequestSenderService requestSenderService)
         {
             _aesService = aesService;
             _requestSenderService = requestSenderService;

@@ -17,7 +17,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 
 builder.Services.AddScoped<AESService>();
-builder.Services.AddScoped<RequestSenderService>();
+builder.Services.AddScoped<IRequestSenderService, RequestSenderService>();
 
 var app = builder.Build();
 
