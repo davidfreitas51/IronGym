@@ -1,0 +1,77 @@
+﻿@using Syncfusion.EJ2
+@RenderSection("styles", required: false)
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LockBox</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LockBox.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Syncfusion ASP.NET MVC controls styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/26.1.35/fluent.css" />
+    <!-- Syncfusion ASP.NET MVC controls scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/26.1.35/dist/ej2.min.js"></script>
+
+    <!-- Bootstrap Icons -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Meta Tags -->
+</head>
+<body style="background-color: black; color: white;">
+
+    <div class="d-flex">
+        <div class="sidebar" style="background-color: #1f1f1f; color: white; width: 250px; height: 100vh; position: fixed; top: 0; left: 0; padding: 20px;">
+            <a href="/" style="padding-left: 15px; font-size: 2em; font-weight: bold; display: block; color: inherit; text-decoration: none;">
+                <img src="~/lib/images/LockBoxLogo.png" alt="Logo" style="height: 30px; width: 30px; vertical-align: middle; margin-right: 10px;">
+                LockBox
+            </a>
+
+            <ul style="list-style-type: none; padding: 0; margin-top: 20px;">
+                <li style="margin-bottom: 10px;">
+                    <a href="/Vault" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
+                        Home
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="/Vault" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
+                        Vault
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="/Vault/NewItem" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
+                        New item
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content" style="flex-grow: 1; padding: 20px; margin: 0 auto; max-width: 800px;">
+            @RenderBody()
+        </div>
+    </div>
+
+    <div class="sidebar" style="background-color: transparent; width: 250px; height: 100vh; position: fixed; top: 0; right: 0; padding: 20px;">
+        <h3 style="color: white;">Notifications</h3>
+        @if (TempData["MSG_S"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["MSG_S"]
+            </div>
+        }
+        @if (TempData["MSG_E"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["MSG_E"]
+            </div>
+        }
+    </div>
+    @Html.EJS().ScriptManager()
+</body>
+</html>

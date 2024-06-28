@@ -5,17 +5,21 @@ using MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Registre a licença se necessário
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBPh8sVXJyS0d+X1RPd11dXmJWd1p/THNYflR1fV9DaUwxOX1dQl9nSXhRfkRnWHxceHxdT2k=");
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.ExpireTimeSpan = TimeSpan.FromDays(3);
-        options.SlidingExpiration = true;
-        options.AccessDeniedPath = "/Forbidden/";
+        options.Cookie.Name = "auth_token";
+        options.LoginPath = "/employee/login";
+        options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+        options.AccessDeniedPath = "/access-denied";
     });
-
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IAESService, AESService>();
 builder.Services.AddScoped<IRequestSenderService, RequestSenderService>();

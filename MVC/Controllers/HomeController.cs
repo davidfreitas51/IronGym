@@ -144,7 +144,7 @@ namespace MVC.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                return RedirectToAction("Index", "Vault");
+                return RedirectToAction("Index", "MainPage");
             }
             return View();
         }
