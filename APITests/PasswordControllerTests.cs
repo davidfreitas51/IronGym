@@ -45,6 +45,7 @@ namespace APITests
                       new User()
                       {
                           Email = $"user{i}@example.com",
+                          Name = "User",
                           PasswordHash = passwordHash,
                           PasswordSalt = passwordSalt,
                           NormalizedEmail = $"USER{i}@EXAMPLE.COM",

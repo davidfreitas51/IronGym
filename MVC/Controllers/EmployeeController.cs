@@ -15,21 +15,29 @@ namespace MVC.Controllers
     {
         private readonly IAESService _aesService;
         private readonly IRequestSenderService _requestSenderService;
+        private readonly HttpClient _httpClient;
         public EmployeeController(IAESService aesService, IRequestSenderService requestSenderService)
         {
             _aesService = aesService;
             _requestSenderService = requestSenderService;
+            _httpClient = new HttpClient();
         }
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var userList = new List<ShowUsersModel>
+            var token = GetJwtTokenFromCookie();
+            var client = _httpClient;
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.GetAsync("https://localhost:7175/api/employee/GetAll");
+
+            if (response.IsSuccessStatusCode)
             {
-                new ShowUsersModel { Id = 1, Email = "user1@example.com", Name = "User One" },
-                new ShowUsersModel { Id = 2, Email = "user2@example.com", Name = "User Two" },
-                new ShowUsersModel { Id = 3, Email = "user3@example.com", Name = "User Three" }
-            };
-            return View(userList);
+                var responseData = await response.Content.ReadAsStringAsync();
+                var userList = JsonSerializer.Deserialize<List<ShowUsersModel>>(responseData);
+                return View(userList);
+            }
+            return View(new List<ShowUsersModel>());
         }
 
         [HttpGet]
@@ -102,5 +110,16 @@ namespace MVC.Controllers
             ViewBag.Errors = "An error has occured";
             return View();
         }
+
+
+        private string GetJwtTokenFromCookie()
+        {
+            if (Request.Cookies.TryGetValue("JWToken", out var token))
+            {
+                return token;
+            }
+            return null;
+        }
+
     }
 }

@@ -3,6 +3,7 @@ using Domain.Entities;
 using FluentAssertions;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using IronGym.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Tests.Repositories.Tests
@@ -37,6 +38,7 @@ namespace Infrastructure.Tests.Repositories.Tests
                       new User()
                       {
                           Email = "User@example.com",
+                          Name = "User",
                           NormalizedEmail = "USER@EXAMPLE.COM",
                           VerificationCode = "123456"
                       });
@@ -139,7 +141,7 @@ namespace Infrastructure.Tests.Repositories.Tests
         {
             var result = _repository.GetAllUsers();
 
-            result.Should().BeAssignableTo<List<User>>();
+            result.Should().BeAssignableTo<List<ShowUsersModel>>();
         }
 
         [Fact]

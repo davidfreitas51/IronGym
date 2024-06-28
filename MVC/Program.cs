@@ -22,7 +22,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IAESService, AESService>();
-builder.Services.AddScoped<IRequestSenderService, RequestSenderService>();
+builder.Services.AddHttpClient<IRequestSenderService, RequestSenderService>();
 
 var app = builder.Build();
 

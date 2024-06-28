@@ -14,6 +14,13 @@
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-6 mb-3">
+                                        <input asp-for="Name" class="form-control" type="Name" name="Name" placeholder="Your name" required style="padding: 12px;" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6 mb-3">
                                         <input asp-for="Email" class="form-control" type="email" name="email" placeholder="E-mail Address" required style="padding: 12px;" />
                                         <span asp-validation-for="Email" class="text-danger"></span>
                                     </div>

@@ -1,8 +1,8 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using Domain.Interfaces.Repositories;
 using Infrastructure.Data;
 using IronGym.Application.Services;
+using IronGym.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -93,9 +93,21 @@ namespace Infrastructure.Repositories
             return _context.Users.FirstOrDefault(u => u.NormalizedEmail == email.ToUpper());
         }
 
-        public List<User> GetAllUsers()
+        public List<ShowUsersModel> GetAllUsers()
         {
-            return _context.Set<User>().ToList();
+            List<User> users = _context.Users.Where(u => u.Role == "User").ToList();
+            List<ShowUsersModel> showUsers = new List<ShowUsersModel>();
+            foreach (User user in users)
+            {
+                ShowUsersModel userModel = new ShowUsersModel
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                };
+                showUsers.Add(userModel);
+            }
+            return showUsers;
         }
 
         public bool UpdateUser(User user)

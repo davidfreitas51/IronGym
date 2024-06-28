@@ -3,6 +3,7 @@ using Domain.Entities;
 using Infrastructure.Repositories;
 using IronGym.Shared.Entities;
 using IronGym.Shared.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -10,6 +11,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,Employee")]
     public class EmployeeController : ControllerBase
     {
         private readonly UserRepository _userRepository;
@@ -23,6 +25,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Login")]
+        [AllowAnonymous]
         public IActionResult Login(LoginViewModel login)
         {
             User user = _userRepository.GetUserByEmail(login.Email);
@@ -49,6 +52,13 @@ namespace API.Controllers
             return Ok(employeeLoginJSON);
         }
 
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
+        {
+            List<ShowUsersModel> users = _userRepository.GetAllUsers();
+            string jsonUsers = JsonConvert.SerializeObject(users);
+            return Ok(jsonUsers);
+        }
 
         [HttpPost("RegisterEmployee")]
         public IActionResult RegisterEmployee(NewAccountViewModel newAccount)

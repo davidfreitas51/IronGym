@@ -31,6 +31,7 @@ namespace API.Controllers
             }
             User user = new User
             {
+                Name = newAccount.Name,
                 Email = newAccount.Email,
             };
             _userRepository.AddUser(user, newAccount.Password);

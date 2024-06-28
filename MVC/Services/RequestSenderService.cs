@@ -5,18 +5,22 @@ namespace MVC.Services
 {
     public class RequestSenderService : IRequestSenderService
     {
+        private readonly HttpClient _httpClient;
+        public RequestSenderService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
         public async Task<HttpResponseMessage> GetRequest(string apiUrl)
         {
-            using HttpClient httpClient = new HttpClient();
-            return await httpClient.GetAsync(apiUrl);
+            return await _httpClient.GetAsync(apiUrl);
         }
 
         public async Task<HttpResponseMessage> PostRequest<T>(T obj, string apiUrl)
         {
-            using HttpClient httpClient = new HttpClient();
             string jsonObj = JsonSerializer.Serialize(obj);
             var content = new StringContent(jsonObj, Encoding.UTF8, "application/json");
-            return await httpClient.PostAsync(apiUrl, content);
+            return await _httpClient.PostAsync(apiUrl, content);
         }
+
     }
 }

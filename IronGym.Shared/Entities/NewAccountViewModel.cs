@@ -4,6 +4,10 @@ namespace IronGym.Shared.Entities
 {
     public class NewAccountViewModel
     {
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(100, ErrorMessage = "The {0} must be at most {1} characters long.")]
+        public string Name { get; set; }
+
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
         public string Email { get; set; }
