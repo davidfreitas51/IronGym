@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Employee\Edit.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Home\ForgotYourPasswordAddEmail.cshtml" />
   </ItemGroup>
 
@@ -33,5 +34,9 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="taskkill /F /IM MVC.exe&#xD;&#xA;wmic process where name='MVC.exe' delete" />
   </Target>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Employee\Edit.cshtml" />
+  </ItemGroup>
 
 </Project>

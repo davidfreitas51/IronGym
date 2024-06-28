@@ -111,7 +111,33 @@ namespace MVC.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            return View();
+        }
 
+        // POST: /Users/Delete/{id}
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                // Implementation for deleting user with given id
+                // Example: Delete user from database
+                // Replace this with your actual delete logic
+                // userRepository.DeleteUser(id);
+
+                // For demonstration, assume deletion is successful
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                // Handle error
+                Response.StatusCode = 500;
+                return Json(new { error = ex.Message });
+            }
+        }
         private string GetJwtTokenFromCookie()
         {
             if (Request.Cookies.TryGetValue("JWToken", out var token))

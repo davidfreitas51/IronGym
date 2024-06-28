@@ -11,5 +11,6 @@
         public string? VerificationCode { get; set; }
         public bool? IsEmailVerified { get; set; }
         public string? Role { get; set; }
+        public List<ExerciseDay>? Schedule { get; set; }
     }
 }
