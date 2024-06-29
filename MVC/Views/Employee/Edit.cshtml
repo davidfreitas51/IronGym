@@ -1,11 +1,77 @@
-﻿<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
-<h1>SOCORRO</h1>
+﻿@using Domain.Entities
+@{
+    Layout = "_EmployeeLoggedInLayout";
+}
+@model UserInfo
+
+<body>
+    <div class="form-container">
+        <form asp-controller="Vault" asp-action="UpdateItem" method="post">
+            <div class="form-group">
+                <h2>Update item</h2>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="name">Name</label>
+                    <input asp-for="Name" type="text" class="form-control" id="name" readonly>
+                </div>
+                <div class="form-group col">
+                    <label for="email">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" id="email" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="age">Age</label>
+                    <input asp-for="Age" type="number" class="form-control" id="age" placeholder="Enter age">
+                </div>
+                <div class="form-group col">
+                    <label for="height">Height (cm)</label>
+                    <input asp-for="Height" type="number" class="form-control" id="height" placeholder="Enter height">
+                </div>
+                <div class="form-group col">
+                    <label for="weight">Weight (kg)</label>
+                    <input asp-for="Weight" type="number" class="form-control" id="weight" placeholder="Enter weight">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="chest">Chest Circumference (cm)</label>
+                    <input asp-for="ChestCircumference" type="number" class="form-control" id="chest" placeholder="Enter chest circumference">
+                </div>
+                <div class="form-group col">
+                    <label for="hip">Hip Circumference (cm)</label>
+                    <input asp-for="HipCircumference" type="number" class="form-control" id="hip" placeholder="Enter hip circumference">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="arm">Arm Circumference (cm)</label>
+                    <input asp-for="ArmCircumference" type="number" class="form-control" id="arm" placeholder="Enter arm circumference">
+                </div>
+                <div class="form-group col">
+                    <label for="thigh">Thigh Circumference (cm)</label>
+                    <input asp-for="ThighCircumference" type="number" class="form-control" id="thigh" placeholder="Enter thigh circumference">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="calf">Calf Circumference (cm)</label>
+                    <input asp-for="CalfCircumference" type="number" class="form-control" id="calf" placeholder="Enter calf circumference">
+                </div>
+                <div class="form-group col">
+                    <label for="forearm">Forearm Circumference (cm)</label>
+                    <input asp-for="ForearmCircumference" type="number" class="form-control" id="forearm" placeholder="Enter forearm circumference">
+                </div>
+
+            </div>
+            <div class="form-row justify-content-center">
+                <!-- Added justify-content-center to center align -->
+                <div class="form-group col text-center">
+                    <!-- Added text-center to center align button within its column -->
+                    <button style="background-color: rgb(243, 97, 0)" type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
