@@ -1,5 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Domain.Entities
 @{
+    Layout = "_EmployeeLoggedInLayout";
 }
+@model UserInfo
+
+<style>
+    .form-control[readonly] {
+        background-color: #e9ecef;
+        opacity: 1;
+        cursor: not-allowed;
+    }
+</style>
+
+<body>
+    <div class="form-container">
+        <form asp-controller="Employee" asp-action="Edit" method="post">
+            <div class="form-group">
+                <h2>Update item</h2>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="name">Name</label>
+                    <input asp-for="Name" type="text" class="form-control" id="name" readonly>
+                </div>
+                <div class="form-group col">
+                    <label for="email">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" id="email" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="age">Age</label>
+                    <input asp-for="Age" type="number" class="form-control" id="age" readonly>
+                </div>
+                <div class="form-group col">
+                    <label for="height">Height (cm)</label>
+                    <input asp-for="Height" type="number" class="form-control" id="height" readonly>
+                </div>
+                <div class="form-group col">
+                    <label for="weight">Weight (kg)</label>
+                    <input asp-for="Weight" type="number" class="form-control" id="weight" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="chest">Chest Circumference (cm)</label>
+                    <input asp-for="ChestCircumference" type="number" class="form-control" id="chest" readonly>
+                </div>
+                <div class="form-group col">
+                    <label for="hip">Hip Circumference (cm)</label>
+                    <input asp-for="HipCircumference" type="number" class="form-control" id="hip" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="arm">Arm Circumference (cm)</label>
+                    <input asp-for="ArmCircumference" type="number" class="form-control" id="arm" readonly>
+                </div>
+                <div class="form-group col">
+                    <label for="thigh">Thigh Circumference (cm)</label>
+                    <input asp-for="ThighCircumference" type="number" class="form-control" id="thigh" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="calf">Calf Circumference (cm)</label>
+                    <input asp-for="CalfCircumference" type="number" class="form-control" id="calf" readonly>
+                </div>
+                <div class="form-group col">
+                    <label for="forearm">Forearm Circumference (cm)</label>
+                    <input asp-for="ForearmCircumference" type="number" class="form-control" id="forearm" readonly>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
