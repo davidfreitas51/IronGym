@@ -93,6 +93,11 @@ namespace Infrastructure.Repositories
             return _context.Users.FirstOrDefault(u => u.NormalizedEmail == email.ToUpper());
         }
 
+        public User GetUserById(int id)
+        {
+            return _context.Users.Find(id);
+        }
+
         public List<ShowUsersModel> GetAllUsers()
         {
             List<User> users = _context.Users.Where(u => u.Role == "User").ToList();
@@ -110,10 +115,27 @@ namespace Infrastructure.Repositories
             return showUsers;
         }
 
-        public bool UpdateUser(User user)
+        public bool UpdateUser(UserInfo userInfo)
         {
             try
             {
+                User user = _context.Users.FirstOrDefault(u => u.Email == userInfo.Email);
+                if (user == null)
+                {
+                    return false;
+                }
+
+                user.Name = userInfo.Name;
+                user.ChestCircumference = userInfo.ChestCircumference;
+                user.ForearmCircumference = userInfo.ForearmCircumference;
+                user.ArmCircumference = userInfo.ArmCircumference;
+                user.HipCircumference = userInfo.HipCircumference;
+                user.ThighCircumference = userInfo.ThighCircumference;
+                user.CalfCircumference = userInfo.CalfCircumference;
+                user.Weight = userInfo.Weight;
+                user.Height = userInfo.Height;
+                user.Age = userInfo.Age;
+
                 _context.Entry(user).State = EntityState.Modified;
                 _context.SaveChanges();
 
@@ -125,17 +147,20 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public bool DeleteUser(int userId)
+
+        public bool DeleteUser(int id)
         {
             try
             {
-                var user = _context.Set<User>().Find(userId);
+                User user = _context.Users.Find(id);
                 if (user == null)
                 {
                     return false;
                 }
-                _context.Set<User>().Remove(user);
+
+                _context.Users.Remove(user);
                 _context.SaveChanges();
+
                 return true;
             }
             catch
@@ -143,5 +168,6 @@ namespace Infrastructure.Repositories
                 return false;
             }
         }
+
     }
 }

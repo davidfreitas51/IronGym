@@ -17,6 +17,7 @@ namespace API.Controllers
         private readonly UserRepository _userRepository;
         private readonly ISecurityService _securityService;
         private readonly AESService _aesService;
+
         public EmployeeController(UserRepository userRepository, ISecurityService securityService, AESService aesService)
         {
             _userRepository = userRepository;
@@ -74,5 +75,64 @@ namespace API.Controllers
             _userRepository.AddUser(user, newAccount.Password);
             return Ok(user);
         }
+
+        [HttpGet("GetUserInfo/{id}")]
+        public IActionResult GetUserInfo(int id)
+        {
+            User user = _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            UserInfo userInfo = new UserInfo
+            {
+                Name = user.Name,
+                Email = user.Email,
+                ChestCircumference = user.ChestCircumference,
+                ForearmCircumference = user.ForearmCircumference,
+                ArmCircumference = user.ArmCircumference,
+                HipCircumference = user.HipCircumference,
+                ThighCircumference = user.ThighCircumference,
+                CalfCircumference = user.CalfCircumference,
+                Weight = user.Weight,
+                Height = user.Height,
+                Age = user.Age
+            };
+
+            string userInfoJSON = JsonConvert.SerializeObject(userInfo);
+            return Ok(userInfoJSON);
+        }
+
+
+        [HttpPost("UpdateUser")]
+        public IActionResult UpdateUser(UserInfo userInfo)
+        {
+            bool result = _userRepository.UpdateUser(userInfo);
+            if (result)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+        [HttpDelete("DeleteUser")]
+        public IActionResult DeleteUser(int id)
+        {
+            bool result = _userRepository.DeleteUser(id);
+            if (result)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
     }
 }

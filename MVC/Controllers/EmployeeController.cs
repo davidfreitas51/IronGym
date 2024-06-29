@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using MVC.Services;
 using System.Security.Claims;
 using System.Text.Json;
+using Domain.Entities;
+using System.Text;
 
 namespace MVC.Controllers
 {
@@ -112,31 +114,66 @@ namespace MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
+            var token = GetJwtTokenFromCookie();
+            var client = _httpClient;
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.GetAsync($"https://localhost:7175/api/employee/GetUserInfo/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseData = await response.Content.ReadAsStringAsync();
+                var userInfo = JsonSerializer.Deserialize<UserInfo>(responseData);
+                return View(userInfo);
+            }
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromForm] UserInfo userInfo)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var token = GetJwtTokenFromCookie();
+            var client = _httpClient;
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            string jsonClient = JsonSerializer.Serialize(userInfo);
+            var content = new StringContent(jsonClient, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("https://localhost:7175/api/employee/UpdateUser", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+
         // POST: /Users/Delete/{id}
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id, [FromForm] UserInfo userInfo)
         {
-            try
-            {
-                // Implementation for deleting user with given id
-                // Example: Delete user from database
-                // Replace this with your actual delete logic
-                // userRepository.DeleteUser(id);
+            var token = GetJwtTokenFromCookie();
+            var client = _httpClient;
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-                // For demonstration, assume deletion is successful
-                return Json(new { success = true });
-            }
-            catch (Exception ex)
+            var response = await client.GetAsync($"https://localhost:7175/api/employee/DeleteUser/{id}");
+
+            if (response.IsSuccessStatusCode)
             {
-                // Handle error
-                Response.StatusCode = 500;
-                return Json(new { error = ex.Message });
+                return RedirectToAction("Index");
             }
+
+
+                return View();
         }
         private string GetJwtTokenFromCookie()
         {
