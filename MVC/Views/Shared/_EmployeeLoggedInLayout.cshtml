@@ -30,26 +30,25 @@
         <div class="sidebar" style="background-color: #1f1f1f; color: white; width: 250px; height: 100vh; position: fixed; top: 0; left: 0; padding: 20px;">
             <a href="/" style="padding-left: 15px; font-size: 2em; font-weight: bold; display: block; color: inherit; text-decoration: none;">
                 <img src="~/lib/images/LockBoxLogo.png" alt="Logo" style="height: 30px; width: 30px; vertical-align: middle; margin-right: 10px;">
-                LockBox
+                IronGym
             </a>
 
             <ul style="list-style-type: none; padding: 0; margin-top: 20px;">
                 <li style="margin-bottom: 10px;">
-                    <a href="/Vault" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
-                        Home
+                    <a href="/Employee" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
+                        Clients
                     </a>
                 </li>
-                <li style="margin-bottom: 10px;">
-                    <a href="/Vault" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
-                        Vault
-                    </a>
-                </li>
-                <li style="margin-bottom: 10px;">
-                    <a href="/Vault/NewItem" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
-                        New item
-                    </a>
-                </li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li style="margin-bottom: 10px;">
+                        <a href="/Vault" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
+                            Employees
+                        </a>
+                    </li>
+                }
             </ul>
+
         </div>
 
         <div class="content" style="flex-grow: 1; padding: 20px; margin: 0 auto; max-width: 800px;">

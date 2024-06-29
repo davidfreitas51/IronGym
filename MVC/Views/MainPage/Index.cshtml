@@ -1,7 +1,5 @@
 ﻿@using Domain.Entities
-@{
-    Layout = "_EmployeeLoggedInLayout";
-}
+
 @model UserInfo
 
 <style>
@@ -10,68 +8,103 @@
         opacity: 1;
         cursor: not-allowed;
     }
-</style>
 
-<body>
-    <div class="form-container">
-        <form asp-controller="Employee" asp-action="Edit" method="post">
-            <div class="form-group">
-                <h2>Update item</h2>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label for="name">Name</label>
-                    <input asp-for="Name" type="text" class="form-control" id="name" readonly>
+    .text-center {
+        text-align: center;
+    }
+</style>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] IronGym </title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LockBox.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Syncfusion ASP.NET MVC controls styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/26.1.35/fluent.css" />
+    <!-- Syncfusion ASP.NET MVC controls scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/26.1.35/dist/ej2.min.js"></script>
+
+    <!-- Bootstrap Icons -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Meta Tags -->
+</head>
+
+<br />
+<br />
+<br />
+<br />
+<body style="background-color: black; color: white;">
+    <div class="content" style="flex-grow: 1; padding: 20px; margin: 0 auto; max-width: 800px;">
+        <div class="form-container">
+            <form asp-controller="Employee" asp-action="Edit" method="post">
+                <div class="form-group text-center">
+                    <h2 style="color: rgb(243, 97, 0)">Your info</h2>
                 </div>
-                <div class="form-group col">
-                    <label for="email">Email</label>
-                    <input asp-for="Email" type="email" class="form-control" id="email" readonly>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="name">Name</label>
+                        <input asp-for="Name" type="text" class="form-control" id="name" readonly>
+                    </div>
+                    <div class="form-group col">
+                        <label for="email">Email</label>
+                        <input asp-for="Email" type="email" class="form-control" id="email" readonly>
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label for="age">Age</label>
-                    <input asp-for="Age" type="number" class="form-control" id="age" readonly>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="age">Age</label>
+                        <input asp-for="Age" type="number" class="form-control" id="age" readonly>
+                    </div>
+                    <div class="form-group col">
+                        <label for="height">Height (cm)</label>
+                        <input asp-for="Height" type="number" class="form-control" id="height" readonly>
+                    </div>
+                    <div class="form-group col">
+                        <label for="weight">Weight (kg)</label>
+                        <input asp-for="Weight" type="number" class="form-control" id="weight" readonly>
+                    </div>
                 </div>
-                <div class="form-group col">
-                    <label for="height">Height (cm)</label>
-                    <input asp-for="Height" type="number" class="form-control" id="height" readonly>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="chest">Chest Circumference (cm)</label>
+                        <input asp-for="ChestCircumference" type="number" class="form-control" id="chest" readonly>
+                    </div>
+                    <div class="form-group col">
+                        <label for="hip">Hip Circumference (cm)</label>
+                        <input asp-for="HipCircumference" type="number" class="form-control" id="hip" readonly>
+                    </div>
                 </div>
-                <div class="form-group col">
-                    <label for="weight">Weight (kg)</label>
-                    <input asp-for="Weight" type="number" class="form-control" id="weight" readonly>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="arm">Arm Circumference (cm)</label>
+                        <input asp-for="ArmCircumference" type="number" class="form-control" id="arm" readonly>
+                    </div>
+                    <div class="form-group col">
+                        <label for="thigh">Thigh Circumference (cm)</label>
+                        <input asp-for="ThighCircumference" type="number" class="form-control" id="thigh" readonly>
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label for="chest">Chest Circumference (cm)</label>
-                    <input asp-for="ChestCircumference" type="number" class="form-control" id="chest" readonly>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="calf">Calf Circumference (cm)</label>
+                        <input asp-for="CalfCircumference" type="number" class="form-control" id="calf" readonly>
+                    </div>
+                    <div class="form-group col">
+                        <label for="forearm">Forearm Circumference (cm)</label>
+                        <input asp-for="ForearmCircumference" type="number" class="form-control" id="forearm" readonly>
+                    </div>
                 </div>
-                <div class="form-group col">
-                    <label for="hip">Hip Circumference (cm)</label>
-                    <input asp-for="HipCircumference" type="number" class="form-control" id="hip" readonly>
+                <div class="text-center">
+                    <small>If you want to update your measure, please, contact our trainers</small>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label for="arm">Arm Circumference (cm)</label>
-                    <input asp-for="ArmCircumference" type="number" class="form-control" id="arm" readonly>
-                </div>
-                <div class="form-group col">
-                    <label for="thigh">Thigh Circumference (cm)</label>
-                    <input asp-for="ThighCircumference" type="number" class="form-control" id="thigh" readonly>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label for="calf">Calf Circumference (cm)</label>
-                    <input asp-for="CalfCircumference" type="number" class="form-control" id="calf" readonly>
-                </div>
-                <div class="form-group col">
-                    <label for="forearm">Forearm Circumference (cm)</label>
-                    <input asp-for="ForearmCircumference" type="number" class="form-control" id="forearm" readonly>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </body>
