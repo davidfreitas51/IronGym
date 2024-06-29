@@ -115,6 +115,23 @@ namespace Infrastructure.Repositories
             return showUsers;
         }
 
+        public List<ShowUsersModel> GetAllEmployees()
+        {
+            List<User> users = _context.Users.Where(u => u.Role == "Employee").ToList();
+            List<ShowUsersModel> showUsers = new List<ShowUsersModel>();
+            foreach (User user in users)
+            {
+                ShowUsersModel userModel = new ShowUsersModel
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                };
+                showUsers.Add(userModel);
+            }
+            return showUsers;
+        }
+
         public bool UpdateUser(UserInfo userInfo)
         {
             try

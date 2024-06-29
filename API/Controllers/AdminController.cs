@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repositories;
+using IronGym.Shared.Entities;
 using IronGym.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,17 +28,15 @@ namespace API.Controllers
         [HttpPost("NewEmployee")]
         public IActionResult NewEmployee(int id)
         {
-            // Implement the logic for creating a new employee
             return Ok();
         }
 
-        [HttpGet("GetEmployee")]
+        [HttpGet("GetAllEmployees")]
         public IActionResult GetAllEmployees()
         {
-            // List<User> employees = _userRepository.GetAllEmployees(); // Assuming a method to get all employees exists
-            // string jsonEmployees = JsonConvert.SerializeObject(employees);
-            // return Ok(jsonEmployees);
-            return Ok();
+            List<ShowUsersModel> employees = _userRepository.GetAllEmployees();
+            string jsonEmployees = JsonConvert.SerializeObject(employees);
+            return Ok(jsonEmployees);
         }
 
         [HttpGet("GetEmployeeByEmail")]

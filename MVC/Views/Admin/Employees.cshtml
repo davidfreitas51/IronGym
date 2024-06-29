@@ -4,6 +4,7 @@
     Layout = "_EmployeeLoggedInLayout";
 }
 
+
 @section styles {
     <style>
         /* Custom styles for Syncfusion components */
@@ -35,11 +36,11 @@
 }
 
 <div>
-    <h2 style="color: #f36100; text-align: center;">Clients</h2>
+    <h2 style="color: #f36100; text-align: center;">Employees</h2>
     @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)Model).Columns(col =>
             {
                 col.Field("Id").HeaderText("Id").Width("50").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add(); // Id column
-                col.Field("Email").HeaderText("Client Email").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
+                col.Field("Email").HeaderText("Employee Email").Width("150").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                 col.Field("Name").HeaderText("Name").Width("130").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add();
                 col.HeaderText("Actions").Template("<button class='e-btn e-small e-flat e-primary' onclick='editUser(${Id})'>Edit</button><button class='e-btn e-small e-flat e-danger' onclick='deleteUser(${Id})'>Delete</button>").Width("120").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).AllowFiltering(false).Add();
             }).AllowPaging(true).AllowSorting(true).AllowFiltering(true).PageSettings(page => page.PageSize(5)).Render()
