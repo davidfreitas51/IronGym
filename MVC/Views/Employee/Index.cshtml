@@ -52,26 +52,11 @@
 
     function deleteUser(id) {
         if (confirm('Are you sure you want to delete this user?')) {
-            // Perform AJAX call to delete action
-            $.ajax({
-                url: '/Employee/Delete/' + id,
-                type: 'POST',
-                success: function (result) {
-                    // Handle success
-                    if (result.success) {
-                        alert('User deleted successfully!');
-                        // Example: Refresh grid after deletion
-                        // $('#Grid').ejGrid('refreshContent');
-                    } else {
-                        alert('Failed to delete user.');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // Handle error
-                    alert('Error deleting user: ' + error);
-                }
-            });
+            // Redirect to delete action
+            window.location.href = '/Employee/Delete/' + id;
         }
     }
+
+
 </script>
 

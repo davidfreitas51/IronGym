@@ -157,23 +157,16 @@ namespace MVC.Controllers
         }
 
 
-        // POST: /Users/Delete/{id}
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id, [FromForm] UserInfo userInfo)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
             var token = GetJwtTokenFromCookie();
             var client = _httpClient;
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"https://localhost:7175/api/employee/DeleteUser/{id}");
+            var response = await client.DeleteAsync($"https://localhost:7175/api/employee/DeleteUser/{id}");
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index");
-            }
-
-
-                return View();
+            return RedirectToAction("Index");
         }
         private string GetJwtTokenFromCookie()
         {

@@ -120,7 +120,7 @@ namespace API.Controllers
         }
 
 
-        [HttpDelete("DeleteUser")]
+        [HttpDelete("DeleteUser/{id}")]
         public IActionResult DeleteUser(int id)
         {
             bool result = _userRepository.DeleteUser(id);
