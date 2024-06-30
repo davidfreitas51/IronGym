@@ -164,7 +164,6 @@ namespace Infrastructure.Repositories
             }
         }
 
-
         public bool DeleteUser(int id)
         {
             try
@@ -186,5 +185,27 @@ namespace Infrastructure.Repositories
             }
         }
 
+        public bool AddEmployee(User user, string password)
+        {
+            try
+            {
+                _securityService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                user.NormalizedEmail = user.Email.ToUpper();
+                user.Role = "Employee";
+                user.IsEmailVerified = true;
+
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

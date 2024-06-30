@@ -1,0 +1,50 @@
+﻿@using IronGym.Shared.Entities
+@model EmployeeModel
+@{
+    Layout = "_EmployeeLoggedInLayout";
+}
+
+<body>
+    <div class="form-container">
+        <form asp-controller="Admin" asp-action="Register" method="post" class="mx-auto" style="max-width: 400px;">
+            <div class="form-group">
+                <h2 class="text-center" style="color: rgb(243, 97, 0);">Register new employee</h2>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="name">Name</label>
+                    <input asp-for="Name" type="text" class="form-control" id="name" placeholder="Enter name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="email">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Enter email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row justify-content-center">
+                <div class="form-group col text-center">
+                    <small>The password will be auto-generated and sent by e-mail</small>
+                </div>
+            </div>
+            @if (ViewBag.Errors != null)
+            {
+                <div class="mt-3">
+                    <span class="text-danger">@ViewBag.Errors</span>
+                </div>
+            }
+            <div style="margin-top: 10px;"></div>
+            <div class="form-row justify-content-center">
+                <div class="form-group col text-center">
+                    <button style="background-color: rgb(243, 97, 0)"  type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Validation Scripts -->
+    <partial name="_ValidationScriptsPartial" />
+
+</body>

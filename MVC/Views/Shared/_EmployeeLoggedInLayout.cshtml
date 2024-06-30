@@ -42,7 +42,7 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <li style="margin-bottom: 10px;">
-                        <a href="/Admin/Employees" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
+                        <a href="/Admin" style="color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; background-color: rgb(243, 97, 0); transition: background-color 0.3s;">
                             Employees
                         </a>
                     </li>
@@ -56,21 +56,6 @@
         </div>
     </div>
 
-    <div class="sidebar" style="background-color: #1f1f1f; width: 250px; height: 100vh; position: fixed; top: 0; right: 0; padding: 20px;">
-        <h3 style="color: white;">Notifications</h3>
-        @if (TempData["MSG_S"] != null)
-        {
-            <div class="alert alert-success" role="alert">
-                @TempData["MSG_S"]
-            </div>
-        }
-        @if (TempData["MSG_E"] != null)
-        {
-            <div class="alert alert-danger" role="alert">
-                @TempData["MSG_E"]
-            </div>
-        }
-    </div>
     @Html.EJS().ScriptManager()
 </body>
 </html>

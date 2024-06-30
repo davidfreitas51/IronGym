@@ -4,7 +4,6 @@
     Layout = "_EmployeeLoggedInLayout";
 }
 
-
 @section styles {
     <style>
         /* Custom styles for Syncfusion components */
@@ -13,6 +12,7 @@
             color: #fff; /* Text color */
             border: 1px solid #ddd; /* Example border */
             border-radius: 5px; /* Example border radius */
+            margin-top: 20px;
         }
 
             .e-grid .e-headercell {
@@ -32,11 +32,40 @@
                 color: #fff; /* Pager text color */
                 border: 1px solid #007bff;
             }
+
+        /* Style for the Register New Employee button */
+        .register-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .register-button button {
+                background-color: #f36100;
+                color: #fff;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 5px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+                .register-button button:hover {
+                    background-color: #d94c00;
+                }
     </style>
 }
 
 <div>
-    <h2 style="color: #f36100; text-align: center;">Employees</h2>
+    <h2 style="color: #f36100; text-align: center; margin-top: 20px;">Employees</h2>
+
+    <div class="form-row justify-content-center">
+        <div class="form-group col text-center">
+            <button style="background-color: rgb(243, 97, 0); margin-top: 15px" type="button" class="btn btn-primary" onclick="registerEmployee()">New employee</button>
+        </div>
+    </div>
+    <!-- Syncfusion Grid component -->
     @Html.EJS().Grid("Grid").DataSource((IEnumerable<object>)Model).Columns(col =>
             {
                 col.Field("Id").HeaderText("Id").Width("50").TextAlign(Syncfusion.EJ2.Grids.TextAlign.Center).Add(); // Id column
@@ -46,16 +75,22 @@
             }).AllowPaging(true).AllowSorting(true).AllowFiltering(true).PageSettings(page => page.PageSize(5)).Render()
 </div>
 
+
 <script>
     function editUser(id) {
         // Redirect to edit action
-        window.location.href = '/Employee/Edit/' + id; // Replace '/Users/Edit/' with your actual edit action route
+        window.location.href = '/Admin/Edit/' + id; // Replace '/Admin/Edit/' with your actual edit action route
     }
 
     function deleteUser(id) {
         if (confirm('Are you sure you want to delete this user?')) {
             // Redirect to delete action
-            window.location.href = '/Employee/Delete/' + id;
+            window.location.href = '/Admin/Delete/' + id; // Replace '/Admin/Delete/' with your actual delete action route
         }
+    }
+
+    function registerEmployee() {
+        // Redirect to registration action
+        window.location.href = '/Admin/Register'; // Replace '/Admin/Register' with your actual registration action route
     }
 </script>

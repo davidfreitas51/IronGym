@@ -58,7 +58,7 @@ namespace MVC.Controllers
             string userEmail = TempData.Peek("Email") as string;
             string encryptedEmail = _aesService.EncryptAES(userEmail);
 
-            var response = await _requestSenderService.GetRequest("https://localhost:7175/api/User/GetVerificationCode/" + encryptedEmail);
+            var response = await _requestSenderService.GetRequest($"https://localhost:7175/api/User/GetVerificationCode/{encryptedEmail}");
 
             if (response.IsSuccessStatusCode)
             {

@@ -10,7 +10,22 @@ namespace IronGym.Application.Services
             try
             {
                 string verificationCode = GenerateRandomDigits(6);
-                MailMessage mail = WriteEmail(userEmail, verificationCode);
+                MailMessage mail = WriteVerificationEmail(userEmail, verificationCode);
+                SmtpClient smtp = PrepareSending();
+                smtp.Send(mail);
+                return verificationCode;
+            }
+            catch
+            {
+                return "";
+            }
+        }
+        public string SendPasswordEmail(string userEmail)
+        {
+            try
+            {
+                string verificationCode = GenerateRandomDigits(6);
+                MailMessage mail = WritePasswordEmail(userEmail, verificationCode);
                 SmtpClient smtp = PrepareSending();
                 smtp.Send(mail);
                 return verificationCode;
@@ -21,7 +36,7 @@ namespace IronGym.Application.Services
                 return "";
             }
         }
-        public static MailMessage WriteEmail(string userEmail, string verificationCode)
+        public static MailMessage WriteVerificationEmail(string userEmail, string verificationCode)
         {
             MailMessage message = new MailMessage();
             message.To.Add(userEmail);
@@ -91,6 +106,78 @@ namespace IronGym.Application.Services
 
 
             message.Subject = "LockBox Verification Code";
+            return message;
+        }
+        public static MailMessage WritePasswordEmail(string userEmail, string verificationCode)
+        {
+            MailMessage message = new MailMessage();
+            message.To.Add(userEmail);
+            message.From = new MailAddress("verifylockbox@gmail.com");
+
+
+            message.Body = $@"
+            <html>
+            <head>
+                <style>
+                    .email-container {{
+                        font-family: Arial, sans-serif;
+                        line-height: 1.6;
+                        color: #333333;
+                        padding: 20px;
+                        max-width: 600px;
+                        margin: auto;
+                    }}
+                    .email-header {{
+                        background-color: #f7f7f7;
+                        padding: 10px 20px;
+                        border-bottom: 1px solid #dddddd;
+                    }}
+                    .email-header h2 {{
+                        margin: 0;
+                    }}
+                    .email-content {{
+                        padding: 20px;
+                        background-color: #ffffff;
+                        border: 1px solid #dddddd;
+                    }}
+                    .verification-code {{
+                        font-size: 1.5em;
+                        color: #4CAF50;
+                        font-weight: bold;
+                        margin: 20px 0;
+                    }}
+                    .email-footer {{
+                        padding: 10px 20px;
+                        background-color: #f7f7f7;
+                        border-top: 1px solid #dddddd;
+                        text-align: center;
+                        font-size: 0.9em;
+                        color: #777777;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class='email-container'>
+                    <div class='email-header'>
+                        <h2>Lockbox Verification</h2>
+                    </div>
+                    <div class='email-content'>
+                        <p>Dear Employee,</p>
+                        <p>Welcome do the IronGym team! Your password is provided below:</p>
+                        <p class='verification-code'>{verificationCode}</p>
+                        <pLogin using this password and the e-mail you recieved it.</p>
+                        <p>Best regards,<br>IronGym Team</p>
+                    </div>
+                    <div class='email-footer'>
+                        &copy; 2024 IronGym. All rights reserved.
+                    </div>
+                </div>
+            </body>
+            </html>";
+            message.IsBodyHtml = true;
+
+
+            message.Subject = "IronGym Employee Password";
             return message;
         }
         private static SmtpClient PrepareSending()

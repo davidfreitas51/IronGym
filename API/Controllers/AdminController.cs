@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repositories;
+using IronGym.Application.Services;
 using IronGym.Shared.Entities;
 using IronGym.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -17,18 +18,37 @@ namespace API.Controllers
         private readonly UserRepository _userRepository;
         private readonly ISecurityService _securityService;
         private readonly AESService _aesService;
+        private readonly EmailService _emailService;
 
         public AdminController(UserRepository userRepository, ISecurityService securityService, AESService aesService)
         {
             _userRepository = userRepository;
             _securityService = securityService;
             _aesService = aesService;
+            _emailService = new EmailService();
         }
 
-        [HttpPost("NewEmployee")]
-        public IActionResult NewEmployee(int id)
+        [HttpPost("RegisterEmployee")]
+        public IActionResult RegisterEmployee(EmployeeModel employee)
         {
-            return Ok();
+            User user = _userRepository.GetUserByEmail(employee.Email);
+            if (user != null)
+            {
+                return BadRequest("User already exists.");
+            }
+
+            string password = _emailService.SendPasswordEmail(employee.Email);
+            User newUser = new User
+            {
+                Name = employee.Name,
+                Email = employee.Email,
+            };
+
+            if (_userRepository.AddEmployee(newUser, password))
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [HttpGet("GetAllEmployees")]
@@ -54,14 +74,12 @@ namespace API.Controllers
         [HttpPost("EditEmployee")]
         public IActionResult EditEmployee(int id)
         {
-            // Implement the logic for editing an employee
             return Ok();
         }
 
         [HttpPost("DeleteEmployee")]
         public IActionResult DeleteEmployee(int id)
         {
-            // Implement the logic for deleting an employee
             return Ok();
         }
     }
