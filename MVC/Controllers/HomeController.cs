@@ -148,5 +148,45 @@ namespace MVC.Controllers
             }
             return View();
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> LoginDefaultUser()
+        {
+            LoginViewModel loginViewModel = new LoginViewModel
+            {
+                Email = "user@example.com",
+                Password = "Password"
+            };
+
+            var response = await _requestSenderService.PostRequest(loginViewModel, "https://localhost:7175/api/User/Login");
+
+            var token = await response.Content.ReadAsStringAsync();
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(3)
+            };
+            Response.Cookies.Append("JWToken", token, cookieOptions);
+            
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, loginViewModel.Email),
+                new Claim(ClaimTypes.Role, "User")
+            };
+            var claimsIdentity = new ClaimsIdentity(
+            claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            
+            var authProperties = new AuthenticationProperties
+            {
+            };
+            
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+            
+            return RedirectToAction("Index", "MainPage");
+        }
     }
 }

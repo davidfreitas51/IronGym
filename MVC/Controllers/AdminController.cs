@@ -1,9 +1,13 @@
 ﻿using Domain.Entities;
 using IronGym.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using MVC.Services;
 
 namespace MVC.Controllers
 {
@@ -11,8 +15,10 @@ namespace MVC.Controllers
     public class AdminController : Controller
     {
         private readonly HttpClient _httpClient;
-        public AdminController()
+        private readonly IRequestSenderService _requestSenderService;
+        public AdminController(IRequestSenderService requestSenderService)
         {
+            _requestSenderService = requestSenderService;
             _httpClient = new HttpClient();
         }
 
@@ -136,6 +142,51 @@ namespace MVC.Controllers
                 return token;
             }
             return null;
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginDefaultManager()
+        {
+            LoginViewModel login = new LoginViewModel
+            {
+                Email = "admin@example.com",
+                Password = "Password"
+            };
+            var response = await _requestSenderService.PostRequest(login, "https://localhost:7175/api/employee/Login");
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            var employeeLogin = JsonSerializer.Deserialize<EmployeeLoginModel>(responseString);
+
+            var token = employeeLogin.Token;
+            var role = employeeLogin.Role;
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(3)
+            };
+            Response.Cookies.Append("JWToken", token, cookieOptions);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, login.Email),
+                new Claim(ClaimTypes.Role, role)
+            };
+            var claimsIdentity = new ClaimsIdentity(
+            claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+
+            return RedirectToAction("Index");
         }
     }
 }

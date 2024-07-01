@@ -113,6 +113,54 @@ namespace MVC.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginDefaultEmployee()
+        {
+            LoginViewModel login = new LoginViewModel
+            {
+                Email = "employee@example.com",
+                Password = "Password"
+            };
+            var response = await _requestSenderService.PostRequest(login, "https://localhost:7175/api/employee/Login");
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            var employeeLogin = JsonSerializer.Deserialize<EmployeeLoginModel>(responseString);
+
+            var token = employeeLogin.Token;
+            var role = employeeLogin.Role;
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(3)
+            };
+            Response.Cookies.Append("JWToken", token, cookieOptions);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, login.Email),
+                new Claim(ClaimTypes.Role, role)
+            };
+            var claimsIdentity = new ClaimsIdentity(
+            claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+
+            return RedirectToAction("Index");
+        }
+
+
+
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {

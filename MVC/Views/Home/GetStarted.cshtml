@@ -39,7 +39,9 @@
                                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                     </div>
                                 </div>
-
+                                <a asp-action="LoginDefaultUser" asp-controller="Home" class="nav-link" style="color: #3498db;">
+                                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Use default user account
+                                </a>
                                 @if (ViewBag.Errors != null)
                                 {
                                     <div class="mt-3">
