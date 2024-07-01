@@ -1,10 +1,8 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using Domain.Interfaces.Repositories;
 using Infrastructure.Repositories;
 using IronGym.Shared.Entities;
 using IronGym.Shared.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -92,13 +90,6 @@ namespace API.Controllers
 
             string token = _securityService.CreateToken(user);
             return Ok(token);
-        }
-
-        [HttpGet("GetInfo/{Email}")]
-        [Authorize]
-        public IActionResult GetInfo(string email)
-        {
-            return Ok();
         }
     }
 }
