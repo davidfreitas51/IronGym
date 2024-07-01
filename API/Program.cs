@@ -1,5 +1,6 @@
 using Application.Interfaces;
 using Application.Services;
+using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
@@ -75,5 +76,29 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Ensure the database is created and migrations are applied at startup
+// Ensure the database is created and seeded at startup
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<IronGymContext>();
+
+        // Create the database if it doesn't exist
+        context.Database.EnsureCreated();
+
+        // Apply any pending migrations
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        // Handle exceptions during migration or seeding
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+    }
+}
+
 
 app.Run();
