@@ -166,7 +166,6 @@ namespace Infrastructure.Repositories
             }
         }
 
-
         public bool UpdateUser(UserInfo userInfo)
         {
             try

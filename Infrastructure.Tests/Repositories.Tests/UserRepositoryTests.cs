@@ -159,5 +159,196 @@ namespace Infrastructure.Tests.Repositories.Tests
 
             result.Should().BeFalse();
         }
+
+        [Fact]
+        public async Task GetUserById_ShouldReturnUser_WhenUserExists()
+        {
+            var userId = 1;
+            var result = _repository.GetUserById(userId);
+            result.Should().NotBeNull();
+            result.Id.Should().Be(userId);
+        }
+
+        [Fact]
+        public async Task GetUserById_ShouldReturnNull_WhenUserDoesNotExist()
+        {
+            // Assuming no user with Id 999 exists
+            var nonExistentUserId = 999;
+            var result = _repository.GetUserById(nonExistentUserId);
+            result.Should().BeNull();
+        }
+
+
+        [Fact]
+        public async Task GetAllEmployees_ShouldReturnAllEmployees()
+        {
+            var result = _repository.GetAllEmployees();
+
+            result.Should().NotBeNull();
+            result.Count.Should().Be(1);
+            result.Should().Contain(e => e.Email == "employee@example.com");
+        }
+
+        [Fact]
+        public async Task GetEmployeeInfo_ShouldReturnEmployeeInfo_WhenEmployeeExists()
+        {
+            var result = _repository.GetEmployeeInfo(2);
+
+            result.Should().NotBeNull();
+            result.Name.Should().Be("Jane Smith");
+            result.Email.Should().Be("employee@example.com");
+        }
+
+        [Fact]
+        public void UpdateEmployee_ShouldReturnTrue_WhenEmployeeExists()
+        {
+            var updateModel = new EmployeeModel
+            {
+                Email = "employee@example.com",
+                Name = "Updated Name"
+            };
+
+            var result = _repository.UpdateEmployee(updateModel);
+
+            result.Should().BeTrue();
+
+            var updatedUser = _dbContext.Users.FirstOrDefault(u => u.Email == updateModel.Email);
+            updatedUser.Should().NotBeNull();
+            updatedUser.Name.Should().Be(updateModel.Name);
+        }
+
+        [Fact]
+        public void UpdateEmployee_ShouldReturnFalse_WhenEmployeeDoesNotExist()
+        {
+            var updateModel = new EmployeeModel
+            {
+                Email = "nonexistent@example.com",
+                Name = "NewName"
+            };
+
+            var result = _repository.UpdateEmployee(updateModel);
+
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void UpdateUser_ShouldReturnTrue_WhenUserExists()
+        {
+            var updateModel = new UserInfo
+            {
+                Email = "user@example.com",
+                Name = "Updated User",
+                ChestCircumference = 95,
+                ForearmCircumference = 27,
+                ArmCircumference = 32,
+                HipCircumference = 100,
+                ThighCircumference = 58,
+                CalfCircumference = 38,
+                Weight = 75,
+                Height = 180,
+                Age = 32
+            };
+
+            var result = _repository.UpdateUser(updateModel);
+
+            result.Should().BeTrue();
+
+            var updatedUser = _dbContext.Users.FirstOrDefault(u => u.Email == updateModel.Email);
+            updatedUser.Should().NotBeNull();
+            updatedUser.Name.Should().Be(updateModel.Name);
+            updatedUser.ChestCircumference.Should().Be(updateModel.ChestCircumference);
+            updatedUser.ForearmCircumference.Should().Be(updateModel.ForearmCircumference);
+            updatedUser.ArmCircumference.Should().Be(updateModel.ArmCircumference);
+            updatedUser.HipCircumference.Should().Be(updateModel.HipCircumference);
+            updatedUser.ThighCircumference.Should().Be(updateModel.ThighCircumference);
+            updatedUser.CalfCircumference.Should().Be(updateModel.CalfCircumference);
+            updatedUser.Weight.Should().Be(updateModel.Weight);
+            updatedUser.Height.Should().Be(updateModel.Height);
+            updatedUser.Age.Should().Be(updateModel.Age);
+        }
+
+        [Fact]
+        public void UpdateUser_ShouldReturnFalse_WhenUserDoesNotExist()
+        {
+            var updateModel = new UserInfo
+            {
+                Email = "nonexistent@example.com",
+                Name = "Updated User",
+                ChestCircumference = 95,
+                ForearmCircumference = 27,
+                ArmCircumference = 32,
+                HipCircumference = 100,
+                ThighCircumference = 58,
+                CalfCircumference = 38,
+                Weight = 75,
+                Height = 180,
+                Age = 32
+            };
+
+            var result = _repository.UpdateUser(updateModel);
+
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void DeleteUser_ShouldReturnTrue_WhenUserExists()
+        {
+            int userIdToDelete = 1;
+
+            var result = _repository.DeleteUser(userIdToDelete);
+
+            result.Should().BeTrue();
+
+            var deletedUser = _dbContext.Users.FirstOrDefault(u => u.Id == userIdToDelete);
+            deletedUser.Should().BeNull();
+        }
+
+        [Fact]
+        public void DeleteUser_ShouldReturnFalse_WhenUserDoesNotExist()
+        {
+            int nonExistentUserId = 999;
+
+            var result = _repository.DeleteUser(nonExistentUserId);
+
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void AddEmployee_ShouldReturnTrue_WhenEmployeeAddedSuccessfully()
+        {
+            var employee = new User
+            {
+                Email = "newemployee@example.com",
+                Name = "New Employee"
+            };
+            string password = "password123";
+
+            var result = _repository.AddEmployee(employee, password);
+
+            result.Should().BeTrue();
+
+            var addedEmployee = _dbContext.Users.FirstOrDefault(u => u.Email == employee.Email);
+            addedEmployee.Should().NotBeNull();
+            addedEmployee.Role.Should().Be("Employee");
+            addedEmployee.IsEmailVerified.Should().BeTrue();
+        }
+
+        [Fact]
+        public void AddEmployee_ShouldReturnFalse_WhenEmployeeEmailAlreadyExists()
+        {
+            var existingEmployee = new User
+            {
+                Email = "employee@example.com",
+                Name = "Existing Employee"
+            };
+            string password = "password123";
+
+            _dbContext.Users.Add(existingEmployee);
+            _dbContext.SaveChanges();
+
+            var result = _repository.AddEmployee(existingEmployee, password);
+
+            result.Should().BeFalse();
+        }
     }
 }

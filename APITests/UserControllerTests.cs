@@ -36,7 +36,7 @@ namespace APITests
             var databaseContext = new IronGymContext(options);
             databaseContext.Database.EnsureCreated();
 
-            if (await databaseContext.Users.CountAsync() < 1)
+            if (await databaseContext.Users.CountAsync() < 4)
             {
                 _securityService.CreatePasswordHash("password123", out byte[] passwordHash, out byte[] passwordSalt);
                 for (int i = 0; i < 10; i++)
@@ -76,7 +76,7 @@ namespace APITests
         {
             var newAccount = new NewAccountViewModel
             {
-                Email = "User1@example.com",
+                Email = "user1@example.com",
                 Password = "password123"
             };
 
