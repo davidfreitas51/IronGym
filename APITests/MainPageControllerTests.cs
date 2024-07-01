@@ -26,7 +26,6 @@ namespace APITests
             _repository = new UserRepository(_dbContext, _securityService);
             _mainPageController = new MainPageController(_repository);
 
-            // Mock the HttpContext with an authenticated user
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.Name, "testuser"),
@@ -80,10 +79,8 @@ namespace APITests
         [Fact]
         public async Task GetInfo_ShouldReturnOk()
         {
-            // Act
             var result = _mainPageController.GetInfo("user0@example.com") as OkObjectResult;
 
-            // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
 
@@ -107,10 +104,8 @@ namespace APITests
         [Fact]
         public async Task GetInfo_ShouldReturnNotFound()
         {
-            // Act
             var result = _mainPageController.GetInfo("nonexistentuser@example.com") as NotFoundResult;
 
-            // Assert
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(404);
         }
