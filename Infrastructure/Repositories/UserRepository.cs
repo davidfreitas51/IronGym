@@ -132,6 +132,41 @@ namespace Infrastructure.Repositories
             return showUsers;
         }
 
+        public EmployeeModel GetEmployeeInfo(int id)
+        {
+            User user = _context.Users.Find(id);
+            EmployeeModel employeeModel = new EmployeeModel
+            {
+                Name = user.Name,
+                Email = user.Email
+            };
+            return employeeModel;
+        }
+
+        public bool UpdateEmployee(EmployeeModel employeeModel)
+        {
+            try
+            {
+                User user = _context.Users.FirstOrDefault(u => u.Email == employeeModel.Email);
+                if (user == null)
+                {
+                    return false;
+                }
+
+                user.Name = employeeModel.Name;
+
+                _context.Entry(user).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
         public bool UpdateUser(UserInfo userInfo)
         {
             try

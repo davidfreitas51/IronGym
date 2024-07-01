@@ -84,15 +84,16 @@ namespace MVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var responseData = await response.Content.ReadAsStringAsync();
-                var userInfo = JsonSerializer.Deserialize<UserInfo>(responseData);
+                var userInfo = JsonSerializer.Deserialize<EmployeeModel>(responseData);
                 return View(userInfo);
             }
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit([FromForm] UserInfo userInfo)
+        public async Task<IActionResult> Edit([FromForm] EmployeeModel employeeModel)
         {
+            ModelState.Remove("Password");
             if (!ModelState.IsValid)
             {
                 return View();
@@ -102,10 +103,11 @@ namespace MVC.Controllers
             var client = _httpClient;
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-            string jsonClient = JsonSerializer.Serialize(userInfo);
+            employeeModel.Password = "XXXXXXXXXXX";
+            string jsonClient = JsonSerializer.Serialize(employeeModel);
             var content = new StringContent(jsonClient, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("https://localhost:7175/api/employee/UpdateUser", content);
+            var response = await client.PostAsync("https://localhost:7175/api/admin/UpdateEmployee", content);
 
             if (response.IsSuccessStatusCode)
             {

@@ -71,16 +71,40 @@ namespace API.Controllers
             return Ok(jsonEmployee);
         }
 
-        [HttpPost("EditEmployee")]
-        public IActionResult EditEmployee(int id)
+        [HttpGet("GetEmployeeInfo/{id}")]
+        public IActionResult GetEmployeeInfo(int id)
         {
-            return Ok();
+            var employee = _userRepository.GetEmployeeInfo(id);
+            string jsonEmployee = JsonConvert.SerializeObject(employee);
+            return Ok(jsonEmployee);
         }
 
-        [HttpPost("DeleteEmployee")]
+        [HttpPost("UpdateEmployee")]
+        public IActionResult EditEmployee(EmployeeModel employee)
+        {
+            bool result = _userRepository.UpdateEmployee(employee);
+            if (result)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpDelete("DeleteEmployee/{id}")]
         public IActionResult DeleteEmployee(int id)
         {
-            return Ok();
+            bool result = _userRepository.DeleteUser(id);
+            if (result)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }
