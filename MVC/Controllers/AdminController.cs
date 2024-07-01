@@ -1,13 +1,12 @@
-﻿using Domain.Entities;
-using IronGym.Shared.Entities;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using IronGym.Shared.Entities;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Services;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using MVC.Services;
 
 namespace MVC.Controllers
 {
