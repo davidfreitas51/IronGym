@@ -1,10 +1,15 @@
 ﻿using System.Net.Mail;
 using System.Net;
+using System.Text;
+using System;
 
 namespace IronGym.Application.Services
 {
     public class EmailService
     {
+        private static readonly Random random = new Random();
+        private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
         public string SendVerificationEmail(string userEmail)
         {
             try
@@ -24,11 +29,11 @@ namespace IronGym.Application.Services
         {
             try
             {
-                string verificationCode = GenerateRandomDigits(6);
-                MailMessage mail = WritePasswordEmail(userEmail, verificationCode);
+                string passwordCode = GenerateRandomString(8);
+                MailMessage mail = WritePasswordEmail(userEmail, passwordCode);
                 SmtpClient smtp = PrepareSending();
                 smtp.Send(mail);
-                return verificationCode;
+                return passwordCode;
             }
             catch (Exception ex)
             {
@@ -199,6 +204,19 @@ namespace IronGym.Application.Services
                 verificationCode += randomNumber.ToString();
             }
             return verificationCode;
+        }
+
+        public string GenerateRandomString(int length)
+        {
+            if (length < 1)
+                throw new ArgumentException("Length must be a positive number", nameof(length));
+
+            var stringBuilder = new StringBuilder(length);
+            for (int i = 0; i < length; i++)
+            {
+                stringBuilder.Append(chars[random.Next(chars.Length)]);
+            }
+            return stringBuilder.ToString();
         }
     }
 }

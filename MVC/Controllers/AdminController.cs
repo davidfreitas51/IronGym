@@ -123,7 +123,7 @@ namespace MVC.Controllers
             var client = _httpClient;
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.DeleteAsync($"https://localhost:7175/api/employee/DeleteUser/{id}");
+            var response = await client.DeleteAsync($"https://localhost:7175/api/admin/DeleteEmployee/{id}");
 
             return RedirectToAction("Index");
         }
