@@ -38,7 +38,7 @@ If any doubts, check the demonstration video
 
 ## Usage
 
-IronGym simplifies the management of clients and employees. Here’s how to use it effectively:
+IronGym helps with the management of clients and employees. Here’s how to use it effectively:
 
 1. **Register/Login**: Start by creating a new account or logging in to an existing one. You may also use the default user account if you prefer not to create a personal account.
 
