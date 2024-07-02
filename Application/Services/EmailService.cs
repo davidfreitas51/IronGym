@@ -194,7 +194,7 @@ namespace IronGym.Application.Services
             smtp.EnableSsl = true;
             smtp.Port = 587;
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.Credentials = new NetworkCredential("verifylockbox@gmail.com", "qenl flea ugsp lsnt");
+            smtp.Credentials = new NetworkCredential("irongymnoreply@gmail.com", "avlj bbcb zhbk xjit");
             return smtp;
         }
         public static string GenerateRandomDigits(int numberOfDigits)
