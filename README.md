@@ -44,7 +44,7 @@ IronGym helps with the management of clients and employees. Here’s how to use 
 
 2. **Email Verification**: IronGym verifies user email addresses via code to validate accounts, ensuring that only legitimate users can access the app.
 
-3. **User Area**: Once logged in, users can view and edit their personal infomation. Employees also have the ability to modify user data.
+3. **User Area**: Once logged in, users can view and edit their personal infomation. Employees have the ability to modify user data.
 
 4. **Employee Area**: Employees can log in to their exclusive area, where they can view, edit, and delete client information. Use the default employee login to access this area.
 
