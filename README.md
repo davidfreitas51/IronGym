@@ -53,4 +53,4 @@ IronGym helps with the management of clients and employees. Here’s how to use 
 
 ## Demonstration
 
-Here is a video demonstration of the application's use: [Watch the video](https://youtu.be/ArwHsVdXbE0)
+Here is a video demonstration of the application's use: [Watch the video](https://youtu.be/1Y-3ZP0mn9E)
