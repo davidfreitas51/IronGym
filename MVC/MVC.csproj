@@ -31,10 +31,6 @@
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="26.1.39" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="taskkill /F /IM MVC.exe&#xD;&#xA;wmic process where name='MVC.exe' delete" />
-  </Target>
-
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Employee\Edit.cshtml" />
   </ItemGroup>

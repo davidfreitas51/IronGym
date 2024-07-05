@@ -19,8 +19,4 @@
     <ProjectReference Include="..\IronGym.Shared\IronGym.Shared.csproj" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="taskkill /F /IM API.exe&#xD;&#xA;wmic process where name='API.exe' delete" />
-  </Target>
-
 </Project>
