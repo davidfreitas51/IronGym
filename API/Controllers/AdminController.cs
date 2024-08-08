@@ -48,6 +48,8 @@ namespace API.Controllers
             {
                 return Ok();
             }
+            Console.WriteLine("Failed to register employee");
+            int a = 0;
             return BadRequest();
         }
 
