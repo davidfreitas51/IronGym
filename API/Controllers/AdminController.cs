@@ -48,6 +48,8 @@ namespace API.Controllers
             {
                 return Ok();
             }
+
+            int a = 1;
             return BadRequest();
         }
 
