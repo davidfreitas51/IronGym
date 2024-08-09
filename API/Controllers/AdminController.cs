@@ -19,7 +19,6 @@ namespace API.Controllers
         private readonly ISecurityService _securityService;
         private readonly AESService _aesService;
         private readonly EmailService _emailService;
-
         public AdminController(UserRepository userRepository, ISecurityService securityService, AESService aesService)
         {
             _userRepository = userRepository;
@@ -48,8 +47,7 @@ namespace API.Controllers
             {
                 return Ok();
             }
-
-            int a = 1;
+            
             return BadRequest();
         }
 

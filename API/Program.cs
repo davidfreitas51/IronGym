@@ -1,7 +1,5 @@
 using Application.Interfaces;
 using Application.Services;
-using Domain.Entities;
-using Domain.Interfaces.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using IronGym.Shared.Services;

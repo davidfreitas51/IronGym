@@ -1,9 +1,6 @@
 ﻿using Domain.Entities;
-using IronGym.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MVC.Services;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Json;
 
